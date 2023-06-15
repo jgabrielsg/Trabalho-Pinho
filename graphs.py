@@ -1,11 +1,6 @@
 import pandas as pd
+from datacleaning import df
+from bokeh.io import output_file, save, show
+from bokeh.plotting import figure
 
-df = pd.read_csv("gas_prices.csv")
-
-# Testando se os valores estão completos:
-
-for coluna in df:
-    coluna_vazia = df[coluna].isna().any() # Retorna um booleano que mostra ter ou não valores vazios em alguma célula de cada coluna
-    print("A coluna '{}' tem algum valor vazio? {}".format(coluna, coluna_vazia))
-
-# Dataset completo!
+output_file("teste1.html")
