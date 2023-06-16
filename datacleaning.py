@@ -8,4 +8,5 @@ for coluna in df:
     coluna_vazia = df[coluna].isna().any() # Retorna um booleano que mostra ter ou não valores vazios em alguma célula de cada coluna
     print("A coluna '{}' tem algum valor vazio? {}".format(coluna, coluna_vazia))
 
+print("\n"*3)
 # Dataset completo!
