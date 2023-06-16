@@ -12,7 +12,7 @@ df1 = df.groupby(["DATA INICIAL", "REGIÃO"])["PREÇO MÉDIO REVENDA"].mean().re
 df1["DATA INICIAL"] = pd.to_datetime(df1["DATA INICIAL"]) #Converte a coluna em data
 
 #Criaçao do objeto do gráfico
-plot = figure(width=640, height=480, tools="box_zoom, pan, reset")
+plot = figure(width=1000, height=480, tools="box_zoom, pan, reset", x_axis_type="datetime")
 plot.xaxis.axis_label = "Data"
 plot.yaxis.axis_label = "Preço de revenda"
 
@@ -23,6 +23,8 @@ Cores = ["Blue", "Orange", "DarkGreen", "Purple", "Red"]
 for regiao, cor in zip(Regiões, Cores):
     dataSource = ColumnDataSource(df1[df1["REGIÃO"] == regiao])
     plot.line(x="DATA INICIAL", y = "MÉDIA", legend_label=regiao, line_width=2, color = cor, source = dataSource)
+
+plot.legend.location = "top_left" #Tira a legenda da frente do gráfico
 
 show(plot)
 
