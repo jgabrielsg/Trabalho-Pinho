@@ -5,6 +5,8 @@ from bokeh.models import ColumnDataSource
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
 
+output_file("teste_gustavo.html")
+
 # Primeiro Gráfico : Preço médio por região ao longo do tempo
 
 #Agrupamento dos dados por data e região pela média dos dados agrupados em um novo dataframe.
@@ -27,5 +29,3 @@ for regiao, cor in zip(Regiões, Cores):
 plot.legend.location = "top_left" #Tira a legenda da frente do gráfico
 
 show(plot)
-
-output_file("teste1.html")
