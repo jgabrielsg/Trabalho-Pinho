@@ -12,6 +12,5 @@ def coluna_vazia(dataset):
         print("A coluna '{}' tem algum valor vazio? {}".format(coluna, valor_vazio))
 
 df = criar_dataset("prouni.csv")
-coluna_vazia(df)
 
 print("-=-="*19)
