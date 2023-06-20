@@ -11,6 +11,11 @@ def coluna_vazia(dataset):
         valor_vazio = dataset[coluna].isna().any() # Retorna um booleano que mostra ter ou não valores vazios em alguma célula
         print("A coluna '{}' tem algum valor vazio? {}".format(coluna, valor_vazio))
 
-df = criar_dataset("prouni.csv")
+# Limpa os valores vazios da coluna selecionada
+def limpar_coluna(dataset, coluna):
+    return dataset.dropna(subset=[coluna])
 
-print("-=-="*19)
+# Conta a quantidade de vezes que um valor se repete em determinada coluna
+def contar_repeticoes(dataset, coluna):
+    repetições = dataset[coluna].value_counts().reset_index()
+    return repetições

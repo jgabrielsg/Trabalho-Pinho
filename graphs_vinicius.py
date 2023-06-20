@@ -1,13 +1,15 @@
-from datacleaning import df
+from datacleaning import criar_dataset, coluna_vazia, limpar_coluna, contar_repeticoes
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, Range1d
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
+
+df = criar_dataset("prouni.csv")
 
 output_file("teste_vinicius.html")
 
 # Primeiro gráfico: quantidade de bolsistas por ano
 
-contagem_por_ano = df['ANO_CONCESSAO_BOLSA'].value_counts().reset_index() # Dataframe só com o ano e a quantidade de vezes que ele aparece
+contagem_por_ano = contar_repeticoes(df, 'ANO_CONCESSAO_BOLSA') # Dataframe só com o ano e a quantidade de vezes que ele aparece
 contagem_por_ano.columns = ['ANO', 'QUANTIDADE'] # Redefinindo o nome das colunas
 
 source = ColumnDataSource(contagem_por_ano)
