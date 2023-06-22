@@ -4,8 +4,8 @@ import numpy as np
 from bokeh.models import ColumnDataSource, NumeralTickFormatter
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
-from bokeh.tile_providers import CARTODBPOSITRON, get_provider
-import pyproj
+from bokeh.tile_providers import CARTODBPOSITRON, get_provider #bibliotecas necessárias para mapa
+import pyproj #bilioteca necessária para arrumar as cordenadas do mapa
 
 output_file("teste_gustavo.html")
 
@@ -21,6 +21,7 @@ plot1.xaxis.axis_label = "Ano"
 plot1.yaxis.axis_label = "Beneficiários"
 plot1.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os números apareçam em notação científica
 
+#Cria os datasources com base no sexo, para poder plotar separadamente
 dataSourceF = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "F"])
 dataSourceM = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "M"])
 
@@ -34,6 +35,7 @@ plot1.legend.location = "top_left" #Tira a legenda da frente do gráfico
 df2 = df.groupby(["NOME_CURSO_BOLSA"])["NOME_CURSO_BOLSA"].count().reset_index(name = "Bolsas")
 df2 = df2.sort_values(['Bolsas'], ascending=False).head(10)
 
+#Cria o objeto do gráfico e o arruma
 plot2 = figure(x_range=df2["NOME_CURSO_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset")
 plot2.xaxis.axis_label = "Curso"
 plot2.yaxis.axis_label = "Quantidade"
