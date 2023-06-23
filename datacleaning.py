@@ -1,6 +1,6 @@
 import pandas as pd
 
-# Função que, quando dado o nome do arquivo csv, te retorna ele como um dataset em Pandas:
+# Função que, quando dado o nome do arquivo csv, retorna ele como um dataset em Pandas:
 def criar_dataset(dataset):
     dataset_preparado = pd.read_csv(dataset)
     return dataset_preparado
@@ -13,9 +13,16 @@ def coluna_vazia(dataset):
 
 # Limpa os valores vazios da coluna selecionada
 def limpar_coluna(dataset, coluna):
-    return dataset.dropna(subset=[coluna])
+    return dataset.dropna(subset = [coluna])
 
 # Conta a quantidade de vezes que um valor se repete em determinada coluna
-def contar_repeticoes(dataset, coluna):
-    repetições = dataset[coluna].value_counts().reset_index()
+def contar_repeticoes_unitaria(dataset, coluna):
+    # A coluna que vai contar as repetições se chamará "QUANTIDADE"
+    repetições = dataset[coluna].value_counts().reset_index(name = "QUANTIDADE")
+    return repetições
+
+# Conta a quantidade de vezes que um valor se repete em relação a mais de uma coluna:
+def contar_repeticoes_multiplas(dataset, *colunas):
+    # A coluna que vai contar as repetições se chamará "QUANTIDADE"
+    repetições = dataset.groupby(list(colunas)).size().reset_index(name = "QUANTIDADE")
     return repetições
