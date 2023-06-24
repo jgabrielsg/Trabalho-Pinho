@@ -13,35 +13,59 @@ output_file("teste_vinicius.html")
 # coluna_vazia(df)
 # Nenhuma das colunas a serem usadas têm valores vazios, então não há a necessidade de limpar o dataset que vou usar
 
-df_tipo_de_bolsa_por_ano = contar_repeticoes_multiplas(df, 'TIPO_BOLSA', 'ANO_CONCESSAO_BOLSA')
+df_tipo_de_bolsa_por_ano = contar_repeticoes_multiplas(df, "TIPO_BOLSA", "ANO_CONCESSAO_BOLSA")
 
 plot = figure()
 
 # Criando uma fonte de dados para cada tipo de bolsa
 bolsas = {}
-for tipo_bolsa in df_tipo_de_bolsa_por_ano['TIPO_BOLSA'].unique():
-    tipo_bolsa_dados = df_tipo_de_bolsa_por_ano[df_tipo_de_bolsa_por_ano['TIPO_BOLSA'] == tipo_bolsa]
+for tipo_bolsa in df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique():
+    # Criação de um dataset para cada tipo de bolsa
+    tipo_bolsa_dados = df_tipo_de_bolsa_por_ano[df_tipo_de_bolsa_por_ano["TIPO_BOLSA"] == tipo_bolsa]
     bolsas[tipo_bolsa] = ColumnDataSource(tipo_bolsa_dados)
 
 # Plotando uma linha para cada tipo de bolsa
-for tipo_bolsa, color in zip(df_tipo_de_bolsa_por_ano['TIPO_BOLSA'].unique(), Accent3):
-    if tipo_bolsa == 'BOLSA COMPLEMENTAR 25%':
-        # Só teve 'BOLSA COMPLEMENTAR 25%' no ano de 2008, então, para essa variável, vou plotar um ponto ao invés de um gráfico de linhas
-        plot.circle(x = 'ANO_CONCESSAO_BOLSA', y = 'QUANTIDADE', source=bolsas[tipo_bolsa], color = color, legend_label = tipo_bolsa, width = 4)
+for tipo_bolsa, color in zip(df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique(), Accent3):
+    if tipo_bolsa == "BOLSA COMPLEMENTAR 25%":
+        # Só teve "BOLSA COMPLEMENTAR 25%" no ano de 2008, então, para essa variável, vou plotar um ponto ao invés de um gráfico de linhas
+        plot.circle(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas[tipo_bolsa], color = color, legend_label = tipo_bolsa, width = 4)
     else:
-        plot.line(x = 'ANO_CONCESSAO_BOLSA', y = 'QUANTIDADE', source=bolsas[tipo_bolsa], line_color = color, legend_label = tipo_bolsa, width = 2)
+        plot.line(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas[tipo_bolsa], line_color = color, legend_label = tipo_bolsa, width = 2)
 
-# Adicionando a legenda
-plot.legend.location = 'top_left'
-plot.legend.title = 'TIPO DE BOLSA'
+# Configurando o título do gráfico
+plot.title.text = "QUANTIDADE DE CADA TIPO DE BOLSA POR ANO"
+plot.title.text_font = "Arial"
+plot.title.text_font_size = "13pt"
+plot.title.text_font_style = "bold"
+plot.title.align = "center"
 
-# Configurar o eixo x
-plot.xaxis.axis_label = 'ANO'
-plot.xaxis.major_label_orientation = 1.2
+# Configurando o eixo x
+plot.xaxis.axis_label = "ANO"
+plot.xaxis.axis_label_text_font = "Arial"
+plot.xaxis.axis_label_text_font_size = "14pt"
+plot.xaxis.axis_label_text_font_style = "bold"
+plot.xaxis.major_label_orientation = 1
+plot.xaxis.ticker = df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"].unique()  # Mostra todos os anos
 
-# Configurar o eixo y
-plot.yaxis.axis_label = 'QUANTIDADE'
-plot.yaxis.formatter = NumeralTickFormatter(format = '0,0') # Impede que os números apareçam em notação científica
+# Configurando o eixo y
+plot.yaxis.axis_label = "QUANTIDADE"
+plot.yaxis.axis_label_text_font = "Arial"
+plot.yaxis.axis_label_text_font_size = "14pt"
+plot.yaxis.axis_label_text_font_style = "bold"
+plot.yaxis.formatter = NumeralTickFormatter(format = "0,0") # Impede que os números apareçam em notação científica
+
+# Configurando a legenda
+plot.legend.location = "top_left"
+plot.legend.title = "TIPO DE BOLSA:"
+plot.legend.title_text_font = "Arial"
+plot.legend.title_text_font_size = "11pt"
+plot.legend.title_text_font_style = "normal" # Para tirar o itálico horrível que vem por padrão
+plot.legend.label_text_font = "Arial"
+plot.legend.label_text_font_size = "10pt"
+
+# Configurando a área de plotagem
+plot.border_fill_color = "white"
+plot.outline_line_color = "black"
 
 # Exibindo o gráfico
 show(plot)
