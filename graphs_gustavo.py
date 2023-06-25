@@ -1,17 +1,20 @@
-from datacleaning import criar_dataset, coluna_vazia, limpar_coluna, contar_repeticoes
+from datacleaning import criar_dataset, coluna_vazia, limpar_coluna
+
+from bokeh.io import output_file, save, show
+from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
+from bokeh.plotting import figure
+from bokeh.tile_providers import Vendors, get_provider #bibliotecas necessárias para mapa
+from bokeh.transform import linear_cmap
+
+import pyproj #bilioteca necessária para arrumar as cordenadas do mapa
 import pandas as pd
 import numpy as np
-from bokeh.models import ColumnDataSource, NumeralTickFormatter
-from bokeh.io import output_file, save, show
-from bokeh.plotting import figure
-from bokeh.tile_providers import CARTODBPOSITRON, get_provider #bibliotecas necessárias para mapa
-import pyproj #bilioteca necessária para arrumar as cordenadas do mapa
 
 output_file("teste_gustavo.html")
 
 df = pd.read_csv("prouni.csv") 
 
-# Primeiro Gráfico : Quantidade de mulheres e homens por sexo por ano
+#----------- Primeiro Gráfico : Quantidade de mulheres e homens por sexo por ano
 
 df1 = df.groupby(["ANO_CONCESSAO_BOLSA", "SEXO_BENEFICIARIO_BOLSA"])["SEXO_BENEFICIARIO_BOLSA"].count().reset_index(name='Quantidade')
 
@@ -30,7 +33,7 @@ plot1.line(x="ANO_CONCESSAO_BOLSA", y = "Quantidade", legend_label="Homem", line
 
 plot1.legend.location = "top_left" #Tira a legenda da frente do gráfico
 
-# Segundo Gráfico : top 10 cursos mais frequêntes no ProUni
+#----------- Segundo Gráfico : top 10 cursos mais frequêntes no ProUni
 
 df2 = df.groupby(["NOME_CURSO_BOLSA"])["NOME_CURSO_BOLSA"].count().reset_index(name = "Bolsas")
 df2 = df2.sort_values(['Bolsas'], ascending=False).head(10)
@@ -45,7 +48,7 @@ plot2.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os núme
 plot2.vbar(x=df2["NOME_CURSO_BOLSA"], top=df2["Bolsas"], width=0.4)
 plot2.y_range.start = 0
 
-#Gráfico 3: Mapa com municípios que já tiveram bolsa
+#----------- Gráfico 3: Mapa com municípios que já tiveram bolsa
 
 #Lê os dados de municipios e deixa somente as colunas que nos importam (nome, latitude, longitude)
 municipios = pd.read_csv("municipios.csv")
@@ -62,9 +65,9 @@ df3 = df.groupby(["MUNICIPIO_BENEFICIARIO_BOLSA"])["MUNICIPIO_BENEFICIARIO_BOLSA
 df3 = pd.merge(df3, municipios, how = 'inner', on = ["MUNICIPIO_BENEFICIARIO_BOLSA"])
 
 #Define um tema pro mapa e o cria
-tile_provider = get_provider(CARTODBPOSITRON)
+tile_provider = get_provider(Vendors.STAMEN_TONER)
 
-p = figure(x_range=(-8500000, -3500000), y_range=(-1650000, -1000000),
+p = figure(x_range=(-8100000, -3900000), y_range=(-1650000, -1000000),
            x_axis_type="mercator", y_axis_type="mercator")
 p.add_tile(tile_provider)
 
@@ -76,9 +79,21 @@ transformer = pyproj.Transformer.from_crs(wgs84, mercator, always_xy=True)
 #Aplica a transformação nas coordenadas do dataframe
 df3["longitude_mercator"], df3["latitude_mercator"] = transformer.transform(df3["longitude"].values, df3["latitude"].values)
 
-dataSourceMapa = ColumnDataSource(data=df3[["longitude_mercator", "latitude_mercator"]])
+#Cria uma paleta de cores
+color_pallete = ("#1F8FFF","#1C77E9","#195FD4","#1648BE","#1230A8","#0F1893","#0C007D")
 
-p.circle(x="longitude_mercator", y="latitude_mercator", size=3, fill_color="blue", fill_alpha=1, source=dataSourceMapa)
+#Cria uma escala contínua atribuindo um gradiente de cores com base na quantidade de bolsas por município
+color_mapper = linear_cmap(field_name = 'quantidade', palette = color_pallete, low = 1, high = 500)
+
+#Plota os dados no mapa
+Bolsas = ColumnDataSource(data=df3)
+p.circle(x="longitude_mercator", y="latitude_mercator", size=3, color=color_mapper, source=Bolsas)
+
+#Cria uma barra de cor como legenda ao lado
+color_bar = ColorBar(color_mapper=color_mapper['transform'], 
+                     formatter = NumeralTickFormatter(format='0.0[0000]'), 
+                     label_standoff = 13, width=8, location=(0,0))
+p.add_layout(color_bar, 'right')
 
 show(p)
 
