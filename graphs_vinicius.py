@@ -2,7 +2,7 @@ from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazi
 from bokeh.models import ColumnDataSource, NumeralTickFormatter
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
-from bokeh.palettes import Accent3
+from bokeh.palettes import Accent3, Category20
 
 df = criar_dataset("prouni.csv")
 
@@ -72,7 +72,7 @@ plot1.outline_line_color = "black"
 show(plot1)
 """
 
-# Segundo gráfico: densidade de bolsas por estado brasileiro
+# Segundo gráfico: raça dos bolsistas por estado brasileiro
 
 # coluna_vazia(df)
 # A coluna "SIGLA_UF_BENEFICIARIO_BOLSA" tem valores vazios, então vou limpá-los
@@ -81,4 +81,22 @@ df_bolsa_por_estado = limpar_coluna(df, "SIGLA_UF_BENEFICIARIO_BOLSA")
 
 # Usando a função "len" para contar as linhas, 402 colunas vazias foram tiradas do dataset
 
-df_bolsa_por_estado = contar_repeticoes_multiplas(df, "SIGLA_UF_BENEFICIARIO_BOLSA", "ANO_CONCESSAO_BOLSA")
+df_bolsa_por_estado = contar_repeticoes_multiplas(df, "SIGLA_UF_BENEFICIARIO_BOLSA", "RACA_BENEFICIARIO_BOLSA")
+
+cores = Category20[20]
+
+plot2 = figure()
+
+bolsas_raça = {}
+for estado in df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"].unique():
+    # Criação de um dataset para cada estado
+    estado_bolsa_dados = df_bolsa_por_estado[df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"] == estado]
+    for raça in estado_bolsa_dados["RACA_BENEFICIARIO_BOLSA"].unique():
+        # Filtrar por estado e raça
+        raça_bolsa_dados = estado_bolsa_dados[estado_bolsa_dados["RACA_BENEFICIARIO_BOLSA"] == raça]
+        # Converter para ColumnDataSource
+        source = ColumnDataSource(raça_bolsa_dados)
+        # Armazenar no dicionário bolsas_raça
+        bolsas_raça[(estado, raça)] = source
+
+print(bolsas_raça)
