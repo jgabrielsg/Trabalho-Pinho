@@ -1,9 +1,9 @@
-from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna, valores_unicos
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, FactorRange, HoverTool
+from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
-from bokeh.transform import dodge, factor_cmap
+from bokeh.transform import dodge
 import pandas as pd
 
 DATA = "CSVs/prouni.csv"
@@ -101,10 +101,6 @@ df_bolsa_por_estado = limpar_coluna(df, "SIGLA_UF_BENEFICIARIO_BOLSA")
 
 df_bolsa_por_estado = contar_repeticoes_multiplas(df, "SIGLA_UF_BENEFICIARIO_BOLSA", "RACA_BENEFICIARIO_BOLSA")
 
-# Criando uma paleta de cores para as raças
-raças_valores_unicos = df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"].unique()
-cores = Category20[6]
-
 # Definindo alguns parâmetros do gráfico
 plot2 = figure(x_range=df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"].unique(), width = 1200, 
                tools = "box_zoom, pan, reset, save, wheel_zoom")
@@ -118,17 +114,21 @@ plot2.toolbar.logo = None # Remove a logo no canto
 plot2.toolbar.autohide = True # Apaga as ferramentas de longe e reaparece quando passa o mouse perto
 plot2.toolbar_location = "below" # Escolhe onde colocar as ferramentas no gráfico
 
+# Criando uma paleta de cores para as raças
+raças_valores_unicos = df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"].unique()
+cores_raça = Category20[6]
+
 # Criando uma fonte com ColumnDataSource para cada umas das raças
-dicionario_fonte = {}
+dicionario_fonte_raça = {}
 for raça in raças_valores_unicos:
     source = ColumnDataSource(df_bolsa_por_estado[df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"] == raça])
-    dicionario_fonte[raça] = source
+    dicionario_fonte_raça[raça] = source
 
 # Criando o gráfico
 for numero_da_linha, raça in enumerate(raças_valores_unicos):
-    source = dicionario_fonte[raça]
+    source = dicionario_fonte_raça[raça]
     barra = plot2.vbar(x = dodge("SIGLA_UF_BENEFICIARIO_BOLSA", numero_da_linha/(len(raças_valores_unicos)+2), range = plot2.x_range),
-                top="QUANTIDADE", width=0.2, source = source, color = cores[numero_da_linha], legend_label = raça)
+                top="QUANTIDADE", width=0.2, source = source, color = cores_raça[numero_da_linha], legend_label = raça)
 
 # Configurando o título do gráfico
 plot2.title.text = "QUANTIDADE DE BOLSAS POR RAÇA EM CADA ESTADO"
@@ -163,34 +163,64 @@ plot2.legend.label_text_font_size = "10pt"
 plot2.border_fill_color = "white"
 plot2.outline_line_color = "black"
 
-# Exibir o gráfico
+# Exibindo o gráfico
 show(plot2)
 
-#---------------------------- Terceiro gráfico: faculdades que mais deram bolsas
+#---------------------------- Terceiro gráfico: sexo dos bolsistas dentre as 5 faculdades que mais deram bolsas
 
-df_bolsa_por_faculdade = df.groupby(["NOME_IES_BOLSA"])["NOME_IES_BOLSA"].count().reset_index(name = "Faculdade")
+# coluna_vazia(df)
+# A coluna "NOME_IES_BOLSA" tem valores vazios, então vou limpá-los
 
-# São mais de 2000 faculdades, então vou pegar as 10 maiores
-df_bolsa_por_faculdade = df_bolsa_por_faculdade.sort_values(['Faculdade'], ascending=False).head(10)
+df_bolsa_por_faculdade = limpar_coluna(df, "NOME_IES_BOLSA")
 
-source = ColumnDataSource(df_bolsa_por_faculdade)
+# Usando a função "len" para contar as linhas, 489 colunas vazias foram tiradas do dataset
 
-plot3 = figure(x_range=df_bolsa_por_faculdade["NOME_IES_BOLSA"], width=1000, height=480, 
+# Agora, vou criar um dataset para descobrir as 5 faculdades que mais deram bolsas:
+df_para_analisar = df_bolsa_por_faculdade.groupby(["NOME_IES_BOLSA"])["NOME_IES_BOLSA"].count().reset_index(name = "QUANTIDADE")
+df_para_analisar = df_para_analisar.nlargest(5, "QUANTIDADE")
+# print(df_para_analisar)
+
+# Vou criar o dataset para os gráficos com base no dataset anterior:
+df_bolsa_por_faculdade = contar_repeticoes_multiplas(df, "NOME_IES_BOLSA", "SEXO_BENEFICIARIO_BOLSA")
+
+faculdades_escolhidas = ["UNIVERSIDADE PAULISTA", "UNIVERSIDADE PITAGORAS UNOPAR", "CENTRO UNIVERSITARIO INTERNACIONAL",
+                         "UNIVERSIDADE ESTACIO DE SA", "UNIVERSIDADE ANHANGUERA - UNIDERP"]
+
+df_bolsa_por_faculdade = df_bolsa_por_faculdade[df_bolsa_por_faculdade["NOME_IES_BOLSA"].isin(faculdades_escolhidas)]
+df_bolsa_por_faculdade = df_bolsa_por_faculdade.sort_values(by='QUANTIDADE', ascending=False)
+print(df_bolsa_por_faculdade)
+
+# Definindo alguns parâmetros do gráfico
+plot3 = figure(x_range=df_bolsa_por_faculdade["NOME_IES_BOLSA"].unique(), width = 1400, 
                tools = "box_zoom, pan, reset, save, wheel_zoom")
 
 # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
-quantidade_de_bolsas_por_faculdade_da_barra = HoverTool(tooltips = [("QUANTIDADE", "@Faculdade")])
-plot3.add_tools(quantidade_de_bolsas_por_faculdade_da_barra)
+quantidade_de_bolsas_da_barra = HoverTool(tooltips = [("QUANTIDADE", "@QUANTIDADE")])
+plot3.add_tools(quantidade_de_bolsas_da_barra)
 
 # Configurando a estética dos parâmetros
 plot3.toolbar.logo = None # Remove a logo no canto
 plot3.toolbar.autohide = True # Apaga as ferramentas de longe e reaparece quando passa o mouse perto
+plot3.toolbar_location = "below" # Escolhe onde colocar as ferramentas no gráfico
+
+# Criando uma paleta de cores para os sexos
+sexos_valores_unicos = df_bolsa_por_faculdade["SEXO_BENEFICIARIO_BOLSA"].unique()
+cores_sexo = ["#FF69B4", "#87CEFA"]
+
+# Criando uma fonte com ColumnDataSource para cada umas dos sexos
+dicionario_fonte_sexo = {}
+for sexo in sexos_valores_unicos:
+    source = ColumnDataSource(df_bolsa_por_faculdade[df_bolsa_por_faculdade["SEXO_BENEFICIARIO_BOLSA"] == sexo])
+    dicionario_fonte_sexo[sexo] = source
 
 # Criando o gráfico
-plot3.vbar(x = "NOME_IES_BOLSA", top = "Faculdade", width = 0.4, source = source)
+for numero_da_linha, sexo in enumerate(sexos_valores_unicos):
+    source = dicionario_fonte_sexo[sexo]
+    barra = plot3.vbar(x = dodge("NOME_IES_BOLSA", numero_da_linha/(len(sexos_valores_unicos)+2), range = plot3.x_range),
+                top="QUANTIDADE", width=0.2, source = source, color = cores_sexo[numero_da_linha], legend_label = sexo)
 
 # Configurando o título do gráfico
-plot3.title.text = "AS 10 FACULDADES QUE MAIS DERAM BOLSAS"
+plot3.title.text = "GÊNEROS DOS BOLSISTAS DAS 5 FACULDADES QUE MAIS DERAM BOLSAS"
 plot3.title.text_font = "Arial"
 plot3.title.text_font_size = "13pt"
 plot3.title.text_font_style = "bold"
@@ -201,7 +231,7 @@ plot3.xaxis.axis_label = "FACULDADES"
 plot3.xaxis.axis_label_text_font = "Arial"
 plot3.xaxis.axis_label_text_font_size = "13pt"
 plot3.xaxis.axis_label_text_font_style = "bold"
-plot3.xaxis.major_label_orientation = 45
+plot3.xaxis.major_label_text_font_size = "9pt"
 
 # Configurando o eixo y
 plot3.yaxis.axis_label = "BOLSAS"
@@ -214,4 +244,5 @@ plot3.yaxis.formatter = NumeralTickFormatter(format = "0,0") # Impede que os nú
 plot3.border_fill_color = "white"
 plot3.outline_line_color = "black"
 
+# Exibindo o gráfico
 show(plot3)
