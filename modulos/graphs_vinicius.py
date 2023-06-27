@@ -1,4 +1,4 @@
-from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, contar_repeticoes_unitaria, limpar_coluna
+from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, contar_repeticoes_unitaria, limpar_coluna, valores_unicos
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, FactorRange, HoverTool
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
@@ -11,6 +11,8 @@ DATA = "CSVs/prouni.csv"
 df = criar_dataset(DATA)
 
 output_file("Testes/teste_vinicius.html")
+
+"""
 
 #---------------------------- Primeiro gráfico: quantidade de cada tipo de bolsa que foi fornecida através dos anos
 
@@ -165,3 +167,7 @@ plot2.outline_line_color = "black"
 
 # Exibir o gráfico
 show(plot2)
+
+"""
+
+#---------------------------- Terceiro gráfico:

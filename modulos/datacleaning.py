@@ -26,3 +26,10 @@ def contar_repeticoes_multiplas(dataset, *colunas):
     # A coluna que vai contar as repetições se chamará "QUANTIDADE"
     repetições = dataset.groupby(list(colunas)).size().reset_index(name = "QUANTIDADE")
     return repetições
+
+# Mostra todos valores únicos de uma coluna do dataset:
+def valores_unicos(dataset, coluna):
+    lista_de_valores_unicos = []
+    for unico in dataset[coluna].unique():
+        lista_de_valores_unicos.append(unico)
+    print(lista_de_valores_unicos)
