@@ -1,8 +1,10 @@
 from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, contar_repeticoes_unitaria, limpar_coluna
-from bokeh.models import ColumnDataSource, NumeralTickFormatter
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, FactorRange
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
+from bokeh.transform import dodge, factor_cmap
+import pandas as pd
 
 df = criar_dataset("prouni.csv")
 
@@ -83,20 +85,21 @@ df_bolsa_por_estado = limpar_coluna(df, "SIGLA_UF_BENEFICIARIO_BOLSA")
 
 df_bolsa_por_estado = contar_repeticoes_multiplas(df, "SIGLA_UF_BENEFICIARIO_BOLSA", "RACA_BENEFICIARIO_BOLSA")
 
-cores = Category20[20]
 
-plot2 = figure()
+source = ColumnDataSource(df_bolsa_por_estado)
 
-bolsas_raça = {}
-for estado in df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"].unique():
-    # Criação de um dataset para cada estado
-    estado_bolsa_dados = df_bolsa_por_estado[df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"] == estado]
-    for raça in estado_bolsa_dados["RACA_BENEFICIARIO_BOLSA"].unique():
-        # Filtrar por estado e raça
-        raça_bolsa_dados = estado_bolsa_dados[estado_bolsa_dados["RACA_BENEFICIARIO_BOLSA"] == raça]
-        # Converter para ColumnDataSource
-        source = ColumnDataSource(raça_bolsa_dados)
-        # Armazenar no dicionário bolsas_raça
-        bolsas_raça[(estado, raça)] = source
+# Criando uma paleta de cores para as raças
+raças = df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"].unique()
+cores = Category20[len(raças)]
 
-print(bolsas_raça)
+# Criar a figura do gráfico
+p = figure(x_range=df_bolsa_por_estado['SIGLA_UF_BENEFICIARIO_BOLSA'].unique(), height=400, title="Quantidade de Bolsistas por Estado e Raça",
+           toolbar_location=None, tools="")
+
+# Configurar as barras empilhadas
+p.vbar(x='SIGLA_UF_BENEFICIARIO_BOLSA', top='QUANTIDADE', width=0.8, source=source,
+       line_color='white', fill_color=factor_cmap('RACA_BENEFICIARIO_BOLSA', palette=cores, factors=raças),
+       legend_field='RACA_BENEFICIARIO_BOLSA')
+
+# Exibir o gráfico
+show(p)
