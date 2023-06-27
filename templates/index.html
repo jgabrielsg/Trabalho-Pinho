@@ -35,7 +35,9 @@
   {{        embed(doc) if doc.elementid }}
   {%-       for root in doc.roots %}
   {%          block root scoped %}
-  {{            embed(roots.Linha_Gustavo) }}
+{{            embed(roots.Linha_Gustavo) }}  <!-- Aqui vai o nome do gráfico, dps de root.  -->
+  {{            embed(roots.Barra_Gustavo) }} <!-- Aqui vai o nome do gráfico, dps de root.  -->
+  {{            embed(roots.Mapa_Gustavo) }} <!-- Aqui vai o nome do gráfico, dps de root.  -->
   {%          endblock %}
   {%        endfor %}
   {%      endfor %}

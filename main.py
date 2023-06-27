@@ -16,6 +16,7 @@ municipios = pd.read_csv(join(dirname(__file__), 'CSVs', 'municipios.csv'))
 
 Gustavo_plot3 = graphs_gustavo.Gustavo_plot3(df, municipios)
 
+# Deixa os gráficos disponíveis pro jinja ler
 curdoc().add_root(Gustavo_plot1)
-# curdoc().add_root(Gustavo_plot2)
-# curdoc().add_root(Gustavo_plot3)
+curdoc().add_root(Gustavo_plot2)
+curdoc().add_root(Gustavo_plot3)

@@ -1,4 +1,4 @@
-from datacleaning import criar_dataset
+# from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
 
 from bokeh.io import output_file, save, show
 from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
@@ -10,9 +10,9 @@ import pyproj
 import pandas as pd
 import numpy as np
 
-DATA = 'CSVs/prouni.csv'
+# DATA = 'CSVs\prouni.csv'
 
-df = criar_dataset(DATA)
+# df = criar_dataset(DATA)
 
 #----------- Primeiro Gráfico : Quantidade de mulheres e homens por sexo por ano
 
@@ -51,6 +51,8 @@ def Gustavo_plot2(df):
 
     plot2.vbar(x=df2["NOME_CURSO_BOLSA"], top=df2["Bolsas"], width=0.4)
     plot2.y_range.start = 0
+
+    return plot2
 
 #----------- Gráfico 3: Mapa com municípios que já tiveram bolsa
 
