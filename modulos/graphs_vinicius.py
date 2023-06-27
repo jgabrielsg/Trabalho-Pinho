@@ -86,6 +86,7 @@ plot1.legend.label_text_font_size = "10pt"
 # Configurando a área de plotagem
 plot1.border_fill_color = "white"
 plot1.outline_line_color = "black"
+plot1.grid.grid_line_dash = "dashdot"
 
 # Exibindo o gráfico
 show(plot1)
@@ -162,6 +163,7 @@ plot2.legend.label_text_font_size = "10pt"
 # Configurando a área de plotagem
 plot2.border_fill_color = "white"
 plot2.outline_line_color = "black"
+plot2.grid.grid_line_dash = "dashdot"
 
 # Exibindo o gráfico
 show(plot2)
@@ -243,6 +245,7 @@ plot3.yaxis.formatter = NumeralTickFormatter(format = "0,0") # Impede que os nú
 # Configurando a área de plotagem
 plot3.border_fill_color = "white"
 plot3.outline_line_color = "black"
+plot3.grid.grid_line_dash = "dashdot"
 
 # Exibindo o gráfico
 show(plot3)
