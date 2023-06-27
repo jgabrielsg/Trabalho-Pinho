@@ -12,8 +12,6 @@ df = criar_dataset(DATA)
 
 output_file("Testes/teste_vinicius.html")
 
-"""
-
 #---------------------------- Primeiro gráfico: quantidade de cada tipo de bolsa que foi fornecida através dos anos
 
 # coluna_vazia(df)
@@ -168,25 +166,52 @@ plot2.outline_line_color = "black"
 # Exibir o gráfico
 show(plot2)
 
-"""
-
 #---------------------------- Terceiro gráfico: faculdades que mais deram bolsas
 
-df2 = df.groupby(["NOME_IES_BOLSA"])["NOME_IES_BOLSA"].count().reset_index(name = "Faculdade")
-df2 = df2.sort_values(['Faculdade'], ascending=False).head(10)
+df_bolsa_por_faculdade = df.groupby(["NOME_IES_BOLSA"])["NOME_IES_BOLSA"].count().reset_index(name = "Faculdade")
 
-source = ColumnDataSource(df2)
+# São mais de 2000 faculdades, então vou pegar as 10 maiores
+df_bolsa_por_faculdade = df_bolsa_por_faculdade.sort_values(['Faculdade'], ascending=False).head(10)
 
-# Cria o objeto do gráfico e o arruma
-plot2 = figure(x_range=df2["NOME_IES_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset", name="Barra_Gustavo")
-plot2.xaxis.axis_label = "Curso"
-plot2.yaxis.axis_label = "Quantidade"
-plot2.xaxis.major_label_orientation = 1
-plot2.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
+source = ColumnDataSource(df_bolsa_por_faculdade)
 
-# Adiciona as barras usando o ColumnDataSource
-plot2.vbar(x="NOME_IES_BOLSA", top="Faculdade", width=0.4, source=source)
+plot3 = figure(x_range=df_bolsa_por_faculdade["NOME_IES_BOLSA"], width=1000, height=480, 
+               tools = "box_zoom, pan, reset, save, wheel_zoom")
 
-plot2.y_range.start = 0
+# Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
+quantidade_de_bolsas_por_faculdade_da_barra = HoverTool(tooltips = [("QUANTIDADE", "@Faculdade")])
+plot3.add_tools(quantidade_de_bolsas_por_faculdade_da_barra)
 
-show(plot2)
+# Configurando a estética dos parâmetros
+plot3.toolbar.logo = None # Remove a logo no canto
+plot3.toolbar.autohide = True # Apaga as ferramentas de longe e reaparece quando passa o mouse perto
+
+# Criando o gráfico
+plot3.vbar(x = "NOME_IES_BOLSA", top = "Faculdade", width = 0.4, source = source)
+
+# Configurando o título do gráfico
+plot3.title.text = "AS 10 FACULDADES QUE MAIS DERAM BOLSAS"
+plot3.title.text_font = "Arial"
+plot3.title.text_font_size = "13pt"
+plot3.title.text_font_style = "bold"
+plot3.title.align = "center"
+
+# Configurando o eixo x
+plot3.xaxis.axis_label = "FACULDADES"
+plot3.xaxis.axis_label_text_font = "Arial"
+plot3.xaxis.axis_label_text_font_size = "13pt"
+plot3.xaxis.axis_label_text_font_style = "bold"
+plot3.xaxis.major_label_orientation = 45
+
+# Configurando o eixo y
+plot3.yaxis.axis_label = "BOLSAS"
+plot3.yaxis.axis_label_text_font = "Arial"
+plot3.yaxis.axis_label_text_font_size = "13pt"
+plot3.yaxis.axis_label_text_font_style = "bold"
+plot3.yaxis.formatter = NumeralTickFormatter(format = "0,0") # Impede que os números apareçam em notação científica
+
+# Configurando a área de plotagem
+plot3.border_fill_color = "white"
+plot3.outline_line_color = "black"
+
+show(plot3)
