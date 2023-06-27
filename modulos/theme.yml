@@ -1,0 +1,42 @@
+attrs:
+  figure:
+    background_fill_color: '#F0FFFF'
+    background_fill_alpha: 0.5
+    border_fill_color: '#FFFFFF'
+    outline_line_color: '#F0FF0F'
+    outline_line_alpha: 0.5
+    outline_line_width: 3
+    outline_line_join: miter
+  Axis:
+    axis_line_color: '#696969'
+    axis_line_width: 1
+    axis_line_alpha: 1.0
+    axis_line_join: miter
+    axis_line_cap: butt
+    axis_label_text_color: '#010101'
+    axis_label_text_font_size: '10pt'
+    axis_label_text_font_style: normal
+    axis_label_text_font: 'Arial'
+  Grid:
+    grid_line_dash: [6, 4]
+    grid_line_alpha: 0.3
+    grid_line_color: '#FFFFFF'
+  Title:
+    text_color: '#010101'
+    text_font_size: '18pt'
+    text_font_style: bold
+    text_font: 'Verdana'
+    text_alpha: 1.0
+    text_align: center
+  Legend:
+    location: top_left
+    label_text_font_style: normal
+    label_text_font_size: '10pt'
+    label_standoff: 8
+    label_height: 20
+    glyph_height: 20
+    glyph_width: 20
+  HoverTool:
+    line_policy: nearest
+    point_policy: follow_mouse
+  
