@@ -6,7 +6,7 @@ from bokeh.palettes import Accent3, Category20
 from bokeh.transform import dodge, factor_cmap
 import pandas as pd
 
-DATA = 'CSVs/prouni.csv'
+DATA = "CSVs/prouni.csv"
 
 df = criar_dataset(DATA)
 
@@ -30,12 +30,12 @@ for tipo_bolsa in df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique():
     bolsas_tipo[tipo_bolsa] = ColumnDataSource(tipo_bolsa_dados)
 
 # Plotando uma linha para cada tipo de bolsa
-for tipo_bolsa, color in zip(df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique(), Accent3):
+for tipo_bolsa, cor in zip(df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique(), Accent3):
     if tipo_bolsa == "BOLSA COMPLEMENTAR 25%":
         # Só teve "BOLSA COMPLEMENTAR 25%" no ano de 2008, então, para essa variável, vou plotar um ponto ao invés de um gráfico de linhas
-        plot1.circle(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas_tipo[tipo_bolsa], color = color, legend_label = tipo_bolsa, width = 4)
+        plot1.circle(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas_tipo[tipo_bolsa], color = cor, legend_label = tipo_bolsa, width = 4)
     else:
-        plot1.line(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas_tipo[tipo_bolsa], line_color = color, legend_label = tipo_bolsa, width = 2)
+        plot1.line(x = "ANO_CONCESSAO_BOLSA", y = "QUANTIDADE", source=bolsas_tipo[tipo_bolsa], line_color = cor, legend_label = tipo_bolsa, width = 2)
 
 # Configurando o título do gráfico
 plot1.title.text = "QUANTIDADE DE CADA TIPO DE BOLSA POR ANO"
@@ -87,21 +87,24 @@ df_bolsa_por_estado = limpar_coluna(df, "SIGLA_UF_BENEFICIARIO_BOLSA")
 
 df_bolsa_por_estado = contar_repeticoes_multiplas(df, "SIGLA_UF_BENEFICIARIO_BOLSA", "RACA_BENEFICIARIO_BOLSA")
 
-
-source = ColumnDataSource(df_bolsa_por_estado)
-
 # Criando uma paleta de cores para as raças
-raças = df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"].unique()
-cores = Category20[len(raças)]
+raças_valores_unicos = df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"].unique()
+cores = Category20[6]
 
-# Criar a figura do gráfico
-p = figure(x_range=df_bolsa_por_estado['SIGLA_UF_BENEFICIARIO_BOLSA'].unique(), height=400, title="Quantidade de Bolsistas por Estado e Raça",
-           toolbar_location=None, tools="")
+# Definindo alguns parâmetros do gráfico
+plot2 = figure(x_range=df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"].unique(), width = 1200)
 
-# Configurar as barras empilhadas
-p.vbar(x='SIGLA_UF_BENEFICIARIO_BOLSA', top='QUANTIDADE', width=0.8, source=source,
-       line_color='white', fill_color=factor_cmap('RACA_BENEFICIARIO_BOLSA', palette=cores, factors=raças),
-       legend_field='RACA_BENEFICIARIO_BOLSA')
+# Criando uma fonte com ColumnDataSource para cada umas das raças
+dicionario_fonte = {}
+for raça in raças_valores_unicos:
+    source = ColumnDataSource(df_bolsa_por_estado[df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"] == raça])
+    dicionario_fonte[raça] = source
+
+# Criando o gráfico
+for numero_da_linha, raça in enumerate(raças_valores_unicos):
+    source = dicionario_fonte[raça]
+    plot2.vbar(x = dodge("SIGLA_UF_BENEFICIARIO_BOLSA", numero_da_linha/(len(raças_valores_unicos)+2), range = plot2.x_range),
+                top="QUANTIDADE", width=0.2, source = source, color = cores[numero_da_linha], legend_label = raça)
 
 # Exibir o gráfico
-show(p)
+show(plot2)
