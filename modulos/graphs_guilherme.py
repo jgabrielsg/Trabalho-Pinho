@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+from datacleaning import criar_dataset
 from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
@@ -10,7 +11,7 @@ output_file("Testes/teste_guilherme.html")
 
 DATA = 'CSVs/prouni.csv'
 
-df = pd.read_csv(DATA)
+df = criar_dataset(DATA)
 
 #------Primeiro Gráfico: Relação entre região e acesso de Deficientes físicos a bolsas
 

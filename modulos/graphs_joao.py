@@ -3,23 +3,19 @@ import numpy as np
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, Legend, DatetimeTickFormatter
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
-from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia
-from bokeh.palettes import Accent3
+from datacleaning import criar_dataset
 from bokeh.layouts import gridplot
 
 output_file("Testes/teste_joao.html")  # Define o nome do arquivo de saída
 
 DATA = 'CSVs/prouni.csv'
 
-df = pd.read_csv(DATA)
-
+df = criar_dataset(DATA)
 
 '''
 Primeiro Gráfico: Divide por região a quantidade de bolsas por ano, mostrando a evolução de cada região
 na quantidade de bolsas por ano. Foi feito um gráfico de linhas para cada região, com o eixo x sendo o ano.
 '''
-
-df["ANO_CONCESSAO_BOLSA"] = pd.to_datetime(df["ANO_CONCESSAO_BOLSA"], format = "%Y")
 
 df_regiões = df.groupby(['ANO_CONCESSAO_BOLSA', 'REGIAO_BENEFICIARIO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
 
@@ -41,7 +37,7 @@ plot_região.title.align = "center"
 
 plot_região.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os números apareçam em notação científica
 
-#show(plot_região)
+show(plot_região)
 
 
 '''
@@ -80,25 +76,32 @@ for regiao in regioes_unicas:
     plots.append(plot_regiao)  # Adiciona o gráfico à lista
 
 # Cria um layout de grade com os gráficos
-#grid = gridplot([[plot] for plot in plots], toolbar_location=None)
+grid = gridplot([[plot] for plot in plots], toolbar_location=None)
 
-#show(grid)  # Exibe o layout de grade com os gráficos
+show(grid)  # Exibe o layout de grade com os gráficos
 
 '''
 Gráfico 3: Quantidade de bolsas por modalidade de ensino por ano, separando entre presencial e EAD
 '''
 
 df_ead_presencial = df.groupby(['MODALIDADE_ENSINO_BOLSA', 'ANO_CONCESSAO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
+df_ead = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'EAD']
+df_presencial = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'PRESENCIAL']
+
 
 plot_modalidade = figure(x_axis_type="datetime", width=1000, height=480, x_range=(2005, 2020))
 
-modalidades = df_ead_presencial['MODALIDADE_ENSINO_BOLSA'].unique()  # Obter a lista de modalidades únicas
+modalidades = df_ead_presencial['MODALIDADE_ENSINO_BOLSA'].unique() # Obter a lista de modalidades únicas
+print(modalidades)
 cores = ('#1957FF', '#0BD979')
 
-for i, modalidade in enumerate(modalidades):
-    dados_modalidade = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == modalidade]
-    plot_modalidade.line(dados_modalidade['ANO_CONCESSAO_BOLSA'], dados_modalidade['QUANTIDADE POR ANO'],
-                         line_width=5, line_color=cores[i], legend_label=modalidade)
+source_ead_presencial = ColumnDataSource(data=dict(
+    x = df_ead['ANO_CONCESSAO_BOLSA'].head(15),
+    y1 = df_ead['QUANTIDADE POR ANO'].head(15),
+    y2 = df_presencial['QUANTIDADE POR ANO'].head(15)
+))
+
+plot_modalidade.varea_stack(x='x', stackers=['y1', 'y2'], color=cores, source=source_ead_presencial, alpha=0.5)
 
 plot_modalidade.title.text = 'QUANTIDADE DE BOLSAS POR MODALIDADE DE ENSINO'
 plot_modalidade.title.text_font = "Arial"
@@ -108,24 +111,24 @@ plot_modalidade.title.align = "center"
 
 plot_modalidade.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
 
-#show(plot_modalidade)
+show(plot_modalidade)
 
 
 '''
 Gráfico 4: Histograma da quantidade de bolsas por faixa etária no ano de 2019, o mais recente no dataset.
 '''
+df['ANO_CONCESSAO_BOLSA'] = pd.to_datetime(df["ANO_CONCESSAO_BOLSA"], format='%Y') # Converter a coluna de ano para datetime
 
 df_idade = df[df['ANO_CONCESSAO_BOLSA'] == '2019']  # Filtrar os dados para o ano de 2019
 
 df_idade['idade'] = df_idade['idade'].astype(int)  # Converter a coluna de idade para inteiros
 
 df_idade = df_idade.groupby('idade').size().reset_index(name='NÚMERO DE PESSOAS')
-print(df_idade)
 
 # Cria uma fonte de dados para o gráfico
 source = ColumnDataSource(df_idade)
 
-plot_idades = figure(width=1000, height=480)
+plot_idades = figure(x_range=(18, 80),width=1000, height=480)
 plot_idades.title.text = "QUANTIDADE DE BOLSAS POR FAIXA ETÁRIA"
 plot_idades.title.text_font = "Arial"
 plot_idades.title.text_font_size = "13pt"
@@ -136,6 +139,7 @@ plot_idades.yaxis.axis_label = "Número de pessoas"
 plot_idades.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
 
 # Usar a fonte de dados na criação das barras
-plot_idades.vbar(x='idade', top='NÚMERO DE PESSOAS', width=0.5, line_width=2, source=source)
+plot_idades.vbar(x='idade', top='NÚMERO DE PESSOAS', width=0.7, line_width=1.5, source=source)
+plot_idades.line(x='idade', y='NÚMERO DE PESSOAS', line_width=2, line_alpha=0.2, line_cap='round', source=source, line_color='black')
 
 show(plot_idades)

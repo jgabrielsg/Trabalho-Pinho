@@ -1,4 +1,4 @@
-# from datacleaning import criar_dataset, coluna_vazia, limpar_coluna
+from datacleaning import criar_dataset
 
 from bokeh.io import output_file, save, show
 from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
@@ -9,6 +9,10 @@ from bokeh.transform import linear_cmap
 import pyproj
 import pandas as pd
 import numpy as np
+
+DATA = 'CSVs/prouni.csv'
+
+df = criar_dataset(DATA)
 
 #----------- Primeiro Gráfico : Quantidade de mulheres e homens por sexo por ano
 
