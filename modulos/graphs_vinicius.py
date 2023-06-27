@@ -1,4 +1,4 @@
-from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, contar_repeticoes_unitaria, limpar_coluna, valores_unicos
+from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna, valores_unicos
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, FactorRange, HoverTool
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
@@ -170,4 +170,23 @@ show(plot2)
 
 """
 
-#---------------------------- Terceiro gráfico:
+#---------------------------- Terceiro gráfico: faculdades que mais deram bolsas
+
+df2 = df.groupby(["NOME_IES_BOLSA"])["NOME_IES_BOLSA"].count().reset_index(name = "Faculdade")
+df2 = df2.sort_values(['Faculdade'], ascending=False).head(10)
+
+source = ColumnDataSource(df2)
+
+# Cria o objeto do gráfico e o arruma
+plot2 = figure(x_range=df2["NOME_IES_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset", name="Barra_Gustavo")
+plot2.xaxis.axis_label = "Curso"
+plot2.yaxis.axis_label = "Quantidade"
+plot2.xaxis.major_label_orientation = 1
+plot2.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
+
+# Adiciona as barras usando o ColumnDataSource
+plot2.vbar(x="NOME_IES_BOLSA", top="Faculdade", width=0.4, source=source)
+
+plot2.y_range.start = 0
+
+show(plot2)
