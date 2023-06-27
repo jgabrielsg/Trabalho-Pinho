@@ -6,9 +6,11 @@ from bokeh.palettes import Accent3, Category20
 from bokeh.transform import dodge, factor_cmap
 import pandas as pd
 
-df = criar_dataset("prouni.csv")
+DATA = 'CSVs/prouni.csv'
 
-output_file("teste_vinicius.html")
+df = criar_dataset(DATA)
+
+output_file("Testes/teste_vinicius.html")
 
 """
 # Primeiro gráfico: quantidade de cada tipo de bolsa que foi fornecida através dos anos

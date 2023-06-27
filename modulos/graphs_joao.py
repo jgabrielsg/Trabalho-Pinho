@@ -7,9 +7,12 @@ from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazi
 from bokeh.palettes import Accent3
 from bokeh.layouts import gridplot
 
+output_file("Testes/teste_joao.html")  # Define o nome do arquivo de saída
 
+DATA = 'CSVs/prouni.csv'
 
-df = criar_dataset("prouni.csv")
+df = pd.read_csv(DATA)
+
 
 '''
 Primeiro Gráfico: Divide por região a quantidade de bolsas por ano, mostrando a evolução de cada região
@@ -40,46 +43,10 @@ plot_região.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que o
 
 #show(plot_região)
 
-'''
-Simplesmente passei vergonha nesse primeiro gráfico, foi mal aí, galera, sou noob demais pra isso kkkkkk 
-eis que eu não sei nem o que fazer com o dataset que eu criei: meme da menina do "sei lá, só sei que foi assim"
-pelo menos o pai é o rei dos memes, né? admitam o pai é o rei dos memes :) eis que a SAM é braba demais
-meu deus, eu não sei o que fazer, eu não sei o que fazer, eu não sei o que fazer, eu não sei o que fazer
-por favor deus, eu vou ter que passar o zap pro guilherme, eu não sei o que fazer, eu não sei o que fazer
-vsf quem é esse who desse guizinho10, noob demais, não sabe nem fazer um gráfico, que noob, que noob
-'''
-
-df_ead_presencial = df.groupby(['MODALIDADE_ENSINO_BOLSA', 'ANO_CONCESSAO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
-
-plot_modalidade = figure(x_axis_type="datetime", width=1000, height=480, x_range=(2005, 2020))
-
-modalidades = df_ead_presencial['MODALIDADE_ENSINO_BOLSA'].unique()  # Obter a lista de modalidades únicas
-cores = ('#1957FF', '#0BD979')
-
-for i, modalidade in enumerate(modalidades):
-    dados_modalidade = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == modalidade]
-    plot_modalidade.line(dados_modalidade['ANO_CONCESSAO_BOLSA'], dados_modalidade['QUANTIDADE POR ANO'],
-                         line_width=5, line_color=cores[i], legend_label=modalidade)
-
-plot_modalidade.title.text = 'QUANTIDADE DE BOLSAS POR MODALIDADE DE ENSINO'
-plot_modalidade.title.text_font = "Arial"
-plot_modalidade.title.text_font_size = "13pt"
-plot_modalidade.title.text_font_style = "bold"
-plot_modalidade.title.align = "center"
-
-plot_modalidade.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
-
-#show(plot_modalidade)
 
 '''
-Gráfico 3: eu simplesmente estou a busca do doce sabor da morte, pare de dizer que eu não sei fazer gráficos
-talvez seja verdade, mas o que importa é que eu estou tentando, e isso é o que importa, não é mesmo?
-e se você está lendo isso, saiba que eu te amo, e que eu te quero bem, e que eu quero que você seja feliz
-aceite meu pedido de casamento, rawr, uwu, :3 vc é cute cuti, linda safada, gostosa, te amo
-pq o copilot não para de se repetir? que noob, que noob, que noob, que noob, que noob, que noob, que noob
-viu? ele fez de novo, meu deus, que noob, que noob, que noob, que noob, que noob, que noob, que noob
+Gráfico 2: Quantidade de bolsas por região e por estado, mostrando a evolução de cada estado na quantidade de bolsas por ano.
 '''
-
 
 # Agrupar os dados por região, estado e calcular a quantidade de beneficiados
 df_regiao_estado = df.groupby(['ANO_CONCESSAO_BOLSA', 'REGIAO_BENEFICIARIO_BOLSA', 'SIGLA_UF_BENEFICIARIO_BOLSA']).size().reset_index(name='QUANTIDADE DE BENEFICIADOS')
@@ -113,7 +80,62 @@ for regiao in regioes_unicas:
     plots.append(plot_regiao)  # Adiciona o gráfico à lista
 
 # Cria um layout de grade com os gráficos
-grid = gridplot([[plot] for plot in plots], toolbar_location=None)
+#grid = gridplot([[plot] for plot in plots], toolbar_location=None)
 
-output_file("graficos.html")  # Define o nome do arquivo de saída
-show(grid)  # Exibe o layout de grade com os gráficos
+#show(grid)  # Exibe o layout de grade com os gráficos
+
+'''
+Gráfico 3: Quantidade de bolsas por modalidade de ensino por ano, separando entre presencial e EAD
+'''
+
+df_ead_presencial = df.groupby(['MODALIDADE_ENSINO_BOLSA', 'ANO_CONCESSAO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
+
+plot_modalidade = figure(x_axis_type="datetime", width=1000, height=480, x_range=(2005, 2020))
+
+modalidades = df_ead_presencial['MODALIDADE_ENSINO_BOLSA'].unique()  # Obter a lista de modalidades únicas
+cores = ('#1957FF', '#0BD979')
+
+for i, modalidade in enumerate(modalidades):
+    dados_modalidade = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == modalidade]
+    plot_modalidade.line(dados_modalidade['ANO_CONCESSAO_BOLSA'], dados_modalidade['QUANTIDADE POR ANO'],
+                         line_width=5, line_color=cores[i], legend_label=modalidade)
+
+plot_modalidade.title.text = 'QUANTIDADE DE BOLSAS POR MODALIDADE DE ENSINO'
+plot_modalidade.title.text_font = "Arial"
+plot_modalidade.title.text_font_size = "13pt"
+plot_modalidade.title.text_font_style = "bold"
+plot_modalidade.title.align = "center"
+
+plot_modalidade.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
+
+#show(plot_modalidade)
+
+
+'''
+Gráfico 4: Histograma da quantidade de bolsas por faixa etária no ano de 2019, o mais recente no dataset.
+'''
+
+df_idade = df[df['ANO_CONCESSAO_BOLSA'] == '2019']  # Filtrar os dados para o ano de 2019
+
+df_idade['idade'] = df_idade['idade'].astype(int)  # Converter a coluna de idade para inteiros
+
+df_idade = df_idade.groupby('idade').size().reset_index(name='NÚMERO DE PESSOAS')
+print(df_idade)
+
+# Cria uma fonte de dados para o gráfico
+source = ColumnDataSource(df_idade)
+
+plot_idades = figure(width=1000, height=480)
+plot_idades.title.text = "QUANTIDADE DE BOLSAS POR FAIXA ETÁRIA"
+plot_idades.title.text_font = "Arial"
+plot_idades.title.text_font_size = "13pt"
+plot_idades.title.text_font_style = "bold"
+plot_idades.title.align = "center"
+plot_idades.xaxis.axis_label = "Idade"
+plot_idades.yaxis.axis_label = "Número de pessoas"
+plot_idades.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
+
+# Usar a fonte de dados na criação das barras
+plot_idades.vbar(x='idade', top='NÚMERO DE PESSOAS', width=0.5, line_width=2, source=source)
+
+show(plot_idades)
