@@ -10,9 +10,11 @@ import pyproj #bilioteca necessária para arrumar as cordenadas do mapa
 import pandas as pd
 import numpy as np
 
-output_file("teste_gustavo.html")
+output_file("Testes/teste_gustavo.html")
 
-df = pd.read_csv("prouni.csv") 
+DATA = 'CSVs/prouni.csv'
+
+df = pd.read_csv(DATA)
 
 #----------- Primeiro Gráfico : Quantidade de mulheres e homens por sexo por ano
 

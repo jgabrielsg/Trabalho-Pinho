@@ -4,9 +4,11 @@ from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
 
-df = criar_dataset("prouni.csv")
+DATA = 'CSVs/prouni.csv'
 
-output_file("teste_vinicius.html")
+df = criar_dataset(DATA)
+
+output_file("Testes/teste_vinicius.html")
 
 """
 # Primeiro gráfico: quantidade de cada tipo de bolsa que foi fornecida através dos anos

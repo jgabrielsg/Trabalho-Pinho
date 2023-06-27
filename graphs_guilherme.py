@@ -6,9 +6,11 @@ from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 
-output_file("teste_guilherme.html")
+output_file("Testes/teste_guilherme.html")
 
-df = pd.read_csv("prouni.csv")
+DATA = 'CSVs/prouni.csv'
+
+df = pd.read_csv(DATA)
 
 #------Primeiro Gráfico: Relação entre região e acesso de Deficientes físicos a bolsas
 
