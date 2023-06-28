@@ -6,6 +6,7 @@ from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralT
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
+from bokeh.layouts import gridplot
 
 output_file("Testes/teste_guilherme.html")
 
@@ -25,7 +26,7 @@ def guilherme_plot1(df):
     #Paleta de cores aleatórias
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
 
-    #EStrutura básica do gráfico
+    #Estrutura básica do gráfico
     plot1 = figure(x_range=df1["REGIAO_BENEFICIARIO_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset")
     plot1.xaxis.axis_label = "Região"
     plot1.yaxis.axis_label = "Número de benificiados"
@@ -59,18 +60,32 @@ def guilherme_plot2(df):
     #Paleta de cores aleatórias
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
 
-    #Estrutura básica do gráfico
-    plot2 = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset")
-    plot2.xaxis.axis_label = "Estado"
-    plot2.yaxis.axis_label = "Número de benificiados(%)"
-    plot2.title.text = "Número de deficientes físicos com acesso a bolsa em relação ao total de bolsistas por estado da região sudeste"
+    #Estrutura básica do gráfico proporcional
+    plot_proporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
+    plot_proporcional.xaxis.axis_label = "Estado"
+    plot_proporcional.yaxis.axis_label = "Número de benificiados"
+    plot_proporcional.title.text = "Proporção de deficientes físicos com acesso a bolsa em relação ao total de bolsistas\npor estado da região sudeste"
 
     #Gráfico de barras do estado pela proporção de bolsistas com deficiência física.
-    plot2.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Proporcao", width=0.4, line_width=2,
+    plot_proporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Proporcao", width=0.4, line_width=2,
             #Preenchendo as barras com uma cor para cada região.
             fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=colors, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
+    plot_proporcional.y_range.start = 0
 
-    plot2.y_range.start = 0
+    #Estrutura básica do gráfico desproporcional
+    plot_desproporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
+    plot_desproporcional.xaxis.axis_label = "Estado"
+    plot_desproporcional.yaxis.axis_label = "Número de benificiados"
+    plot_desproporcional.title.text = "Número de deficientes físicos com acesso a bolsa\npor estado da região sudeste"
+
+    #Gráfico de barras do estado pelo número de bolsistas com deficiência física.
+    plot_desproporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Quantidade", width=0.4, line_width=2,
+            #Preenchendo as barras com uma cor para cada região.
+            fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=colors, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
+    plot_desproporcional.y_range.start = 0
+
+    #Gera um gridplot com os dois gráficos.
+    plot2 = gridplot([[plot_desproporcional, None],[plot_proporcional, None]])          
 
     return plot2
 
