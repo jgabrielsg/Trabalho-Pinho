@@ -1,0 +1,9 @@
+button {
+    background-color: blue; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    padding: 10px 20px; /* Espaçamento interno */
+    border: none; /* Removendo a borda */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra */
+    cursor: pointer; /* Cursor ao passar o mouse */
+  }
+  

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     main(["bokeh", "serve", "--show", "../Trabalho-Pinho"])
 
 #Carrega o dataframe
-df = pd.read_csv(join(dirname(__file__), 'CSVs', 'prouni.csv')) 
+df = pd.read_csv(join(dirname(__file__), 'CSVs', 'prouni.csv'))
 
 Gustavo_plot1 = graphs_gustavo.Gustavo_plot1(df)
 Gustavo_plot2 = graphs_gustavo.Gustavo_plot2(df)

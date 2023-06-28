@@ -12,8 +12,94 @@
       html, body {
         box-sizing: border-box;
         height: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0px;
+        padding: 0px;
+      }
+      /* Defina o estilo do quadrado */
+      .square {
+        width: 100%; /* Largura do quadrado */
+        top: 0; /* Distância do topo */
+        height: 170px; /* Altura do quadrado */
+        background-color: #e0ffff; /* Cor de fundo do quadrado */
+        position: absolute;
+        z-index: -1;
+      }
+      nav {
+        margin: 10px;
+      }
+      button {
+        background-color: #008b8b; /* Cor de fundo */
+        color: white; /* Cor do texto */
+        padding: 10px 20px; /* Espaçamento interno */
+        border: none; /* Removendo a borda */
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra */
+        cursor: pointer; /* Cursor ao passar o mouse */
+      }
+      h1 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 30px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      h6 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      article {
+        position: relative;
+        text-align: justify;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+        width: 60%; /* Define a largura para 60% */
+        float: left; /* Alinha à esquerda */
+      }
+      article h2{
+        text-align: justify;
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      article p {
+        text-align: justify;
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      aside {
+        float: right; /* Alinhar à direita */
+        width: 35%; /* Largura da div */
+        padding-left: 20px; /* Espaçamento à esquerda */
+        margin-top: 20px;
+      }
+      aside img {
+        display: block; /* Fazer a imagem ocupar todo o espaço disponível */
+        width: 100%; /* Largura da imagem */
+        margin-bottom: 10px; /* Espaçamento inferior */
       }
     </style>
   {%   block css_resources -%}
@@ -30,49 +116,115 @@
   {% block body %}
 
   <body>
-    <button id="btnGustavo">Gráficos Gustavo</button>
-    <button id="btnGuilherme">Gráficos Guilherme</button>
-    <button id="btnJoao">Gráficos João</button>
-    <button id="btnVinicius">Gráficos Vinicius</button>
+    <div class="container">
+      <div class="square"></div>
+    </div>
+    <header>
+      <h1>Trabalho de Visualização de Dados</h1>
+      <h6>Integrantes: Gustavo Bianchi, João Gabriel, Guilherme Buss e Vinicius Nascimento</h6>
+    </header>
 
-    {% block inner_body %}
-    {% block contents %}
-    {% for doc in docs %}
-    {{ embed(doc) if doc.elementid }}
-    {%- for root in doc.roots %}
-    {% block root scoped %}
+    <nav>
+      <!-- Botões para mostrar os gráficos -->
+      <button id="btnPrincipal">Página Inicial</button>
+      <button id="btnGustavo">Gráficos Gustavo</button>
+      <button id="btnGuilherme">Gráficos Guilherme</button>
+      <button id="btnJoao">Gráficos João</button>
+      <button id="btnVinicius">Gráficos Vinicius</button>
+    </nav>
 
-    <!-- Divs criadas para separar os gráficos -->
-    <div id="graficosGustavo">
-        {{ embed(roots.Linha_Gustavo) }}
-        {{ embed(roots.Barra_Gustavo) }}
-        {{ embed(roots.Mapa_Gustavo) }}
+    <div class="inicial">
+      <div class="conteudo">
+        <article>
+          <h2>Introdução</h2>
+          <p>
+            Esse trabalho tem como objetivo a criação de gráficos interativos utilizando a biblioteca Bokeh, em Python.
+            Para isso, foram utilizados dados do site <a href="https://www.kaggle.com/">Kaggle</a>. A base de dados utilizada
+            foi sobre os dados do Prouni de 2005 a 2019, disponível <a href="https://www.kaggle.com/datasets/lfarhat/brasil-students-scholarship-prouni-20052019">aqui</a>.
+          </p>
+          <h2>Metodologia</h2>
+          <p>
+            Para a criação dos gráficos, foi utilizado a biblioteca Bokeh, em Python. A biblioteca Bokeh é uma biblioteca 
+            criada em 2013, que permite a criação de gráficos interativos em Python, com o objetivo de ser uma forma simples
+            de criar gráficos interativos, tanto os mais simples quanto os mais complexos. Utilizamos diversas das funções do
+            Bokeh, como o ColumnDataSource, para criar os dados que seriam utilizados nos gráficos, e o figure, para criar os
+            gráficos em si. Após termos os gráficos criados, colocamo-los em uma página HTML, utilizando o Jinja2, que é um
+            template engine para Python, que permite a criação de páginas HTML dinâmicas, com a possibilidade de utilizar
+            variáveis e estruturas de controle do Python.
+          </p>
+          <p>
+            Para a criação da página HTML, utilizamos o template padrão do Bokeh,
+            que já possui uma estrutura básica de HTML, e adicionamos o nosso conteúdo, como os gráficos e os botões para
+            alternar entre os gráficos.
+            Dentre as funcionalidades que foram implementadas, temos a possibilidade de alternar entre a página inicial e os
+            gráficos, e a possibilidade de alternar entre os gráficos de cada integrante. Para isso foi utilizado o JavaScript,
+            que permite a criação de funções que são executadas ao clicar em um botão. Também foi utilizado o CSS, para a
+            estilização da página, deixando-a mais agradável visualmente.
+          </p>
+          <h2>Funcionalidades e Gráficos</h2>
+          <p>
+            Foram-se criados diversos gráficos entre os participantes, como gráficos de barras, gráficos de linhas, gráficos de
+            área, gráficos de histograma e gráficos de mapa. Os gráficos possuem certas funcionalidades, como a possibilidade
+            de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
+            Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
+          </p>
+        </article>
+
+        <aside>
+          <img src="https://s2-ge.glbimg.com/aOUrYWXY2kA4R9nf2h0mMvBpnTo=/0x206:1538x1766/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2023/K/9/DR0RphQE6QbyCwWAWwBw/ennervalenciainter.jpg" alt="Inter">
+        </aside>
+      </div>
     </div>
 
-    <div id="graficosGuilherme">
-        <!-- Colocar os gráficos criados aqui -->
-    </div>
+    <div class="nao_inicial">
+      {% block inner_body %}
+        {% block contents %}
+        {% for doc in docs %}
+        {{ embed(doc) if doc.elementid }}
+        {%- for root in doc.roots %}
+        {% block root scoped %}
 
-    <div id="graficosJoao">
-        {{ embed(roots.Histograma_Joao) }}
-        {{ embed(roots.Area_Joao) }}
-        {{ embed(roots.Linhas_Joao) }}
-    </div>
+        <div id="graficosGustavo">
+            {{ embed(roots.Linha_Gustavo) }}
+            {{ embed(roots.Barra_Gustavo) }}
+            {{ embed(roots.Mapa_Gustavo) }}
+        </div>
 
-    <div id="graficosVinicius">
-        <!-- Colocar os gráficos criados aqui -->
-    </div>
+        <div id="graficosGuilherme">
+            <!-- Colocar os gráficos criados aqui -->
+        </div>
 
-    {% endblock %}
-    {% endfor %}
-    {% endfor %}
-    {% endblock contents %}
-    {{ plot_script | indent(4) }}
-    {% endblock inner_body %}
+        <div id="graficosJoao">
+            {{ embed(roots.Histograma_Joao) }}
+            {{ embed(roots.Area_Joao) }}
+            {{ embed(roots.Linhas_Joao) }}
+        </div>
+
+        <div id="graficosVinicius">
+            <!-- Colocar os gráficos criados aqui -->
+        </div>
+
+        {% endblock %}
+        {% endfor %}
+        {% endfor %}
+        {% endblock contents %}
+      {% endblock inner_body %}
+    </div>
 
     <script>
-        // Funções para mostrar apenas os gráficos do botão correspondente
+        // Função para alternar entre a exibição inicial e os gráficos
+        function pagina_inicial() {
+            const inicial = document.querySelector('.inicial');
+            const graficos = document.querySelector('.nao_inicial');
 
+            inicial.style.display = inicial.style.display === 'none' ? 'block' : 'none';
+            graficos.style.display = graficos.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Associa a função ao botão
+        document.getElementById('btnPrincipal').addEventListener('click', pagina_inicial);
+
+        // Funções para mostrar apenas os gráficos do botão correspondente
         function mostrarGustavo() {
             document.getElementById("graficosGustavo").style.display = "block";
             document.getElementById("graficosGuilherme").style.display = "none";
@@ -108,6 +260,7 @@
         document.getElementById("btnVinicius").addEventListener("click", mostrarVinicius);
     </script>
 
+    {{ plot_script | indent(4) }}
   </body>
   {% endblock body%}
 </html>

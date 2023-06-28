@@ -10,7 +10,7 @@ from datacleaning import criar_dataset
 
 import os
 
-caminho_theme = os.path.join(os.path.dirname(__file__), '..', 'theme.yml')
+caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'theme.yaml')
 
 curdoc().theme = Theme(filename=caminho_theme)
 
