@@ -63,11 +63,12 @@ def guilherme_plot2(df):
     #Estrutura básica do gráfico proporcional
     plot_proporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
     plot_proporcional.xaxis.axis_label = "Estado"
-    plot_proporcional.yaxis.axis_label = "Número de benificiados"
+    plot_proporcional.yaxis.axis_label = "Proporção de benificiados"
     plot_proporcional.title.text = "Proporção de deficientes físicos com acesso a bolsa em relação ao total de bolsistas\npor estado da região sudeste"
+    plot_proporcional.yaxis.formatter = NumeralTickFormatter(format="0.0%")
 
     #Gráfico de barras do estado pela proporção de bolsistas com deficiência física.
-    plot_proporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Proporcao", width=0.4, line_width=2,
+    plot_proporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Proporcao", width=0.4, line_width=0,
             #Preenchendo as barras com uma cor para cada região.
             fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=colors, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
     plot_proporcional.y_range.start = 0
@@ -79,7 +80,7 @@ def guilherme_plot2(df):
     plot_desproporcional.title.text = "Número de deficientes físicos com acesso a bolsa\npor estado da região sudeste"
 
     #Gráfico de barras do estado pelo número de bolsistas com deficiência física.
-    plot_desproporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Quantidade", width=0.4, line_width=2,
+    plot_desproporcional.vbar(x="SIGLA_UF_BENEFICIARIO_BOLSA", top="Quantidade", width=0.4, line_width=0,
             #Preenchendo as barras com uma cor para cada região.
             fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=colors, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
     plot_desproporcional.y_range.start = 0
