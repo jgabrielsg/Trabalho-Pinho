@@ -1,12 +1,16 @@
 import pandas as pd
 import numpy as np
 
-from datacleaning import criar_dataset
 from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
 from bokeh.io import output_file, save, show
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from bokeh.layouts import gridplot
+
+import sys
+sys.path.append('modulos/')
+
+from datacleaning import criar_dataset
 
 output_file("Testes/teste_guilherme.html")
 
