@@ -28,22 +28,84 @@
   </head>
   {% endblock head%}
   {% block body %}
+
   <body>
-  {%  block inner_body %}
-  {%    block contents %}
-  {%      for doc in docs %}
-  {{        embed(doc) if doc.elementid }}
-  {%-       for root in doc.roots %}
-  {%          block root scoped %}
-{{            embed(roots.Linha_Gustavo) }}  <!-- Aqui vai o nome do gráfico, dps de root.  -->
-  {{            embed(roots.Barra_Gustavo) }} <!-- Aqui vai o nome do gráfico, dps de root.  -->
-  {{            embed(roots.Mapa_Gustavo) }} <!-- Aqui vai o nome do gráfico, dps de root.  -->
-  {%          endblock %}
-  {%        endfor %}
-  {%      endfor %}
-  {%    endblock contents %}
-  {{ plot_script | indent(4) }}
-  {%  endblock inner_body %}
+    <button id="btnGustavo">Gráficos Gustavo</button>
+    <button id="btnGuilherme">Gráficos Guilherme</button>
+    <button id="btnJoao">Gráficos João</button>
+    <button id="btnVinicius">Gráficos Vinicius</button>
+
+    {% block inner_body %}
+    {% block contents %}
+    {% for doc in docs %}
+    {{ embed(doc) if doc.elementid }}
+    {%- for root in doc.roots %}
+    {% block root scoped %}
+
+    <!-- Divs criadas para separar os gráficos -->
+    <div id="graficosGustavo">
+        {{ embed(roots.Linha_Gustavo) }}
+        {{ embed(roots.Barra_Gustavo) }}
+        {{ embed(roots.Mapa_Gustavo) }}
+    </div>
+
+    <div id="graficosGuilherme">
+        <!-- Colocar os gráficos criados aqui -->
+    </div>
+
+    <div id="graficosJoao">
+        <!-- Colocar os gráficos criados aqui -->
+    </div>
+
+    <div id="graficosVinicius">
+        <!-- Colocar os gráficos criados aqui -->
+    </div>
+
+    {% endblock %}
+    {% endfor %}
+    {% endfor %}
+    {% endblock contents %}
+    {{ plot_script | indent(4) }}
+    {% endblock inner_body %}
+
+    <script>
+        // Funções para mostrar apenas os gráficos do botão correspondente
+
+        function mostrarGustavo() {
+            document.getElementById("graficosGustavo").style.display = "block";
+            document.getElementById("graficosGuilherme").style.display = "none";
+            document.getElementById("graficosJoao").style.display = "none";
+            document.getElementById("graficosVinicius").style.display = "none";
+        }
+
+        function mostrarGuilherme() {
+            document.getElementById("graficosGustavo").style.display = "none";
+            document.getElementById("graficosGuilherme").style.display = "block";
+            document.getElementById("graficosJoao").style.display = "none";
+            document.getElementById("graficosVinicius").style.display = "none";
+        }
+
+        function mostrarJoao() {
+            document.getElementById("graficosGustavo").style.display = "none";
+            document.getElementById("graficosGuilherme").style.display = "none";
+            document.getElementById("graficosJoao").style.display = "block";
+            document.getElementById("graficosVinicius").style.display = "none";
+        }
+
+        function mostrarVinicius() {
+            document.getElementById("graficosGustavo").style.display = "none";
+            document.getElementById("graficosGuilherme").style.display = "none";
+            document.getElementById("graficosJoao").style.display = "none";
+            document.getElementById("graficosVinicius").style.display = "block";
+        }
+
+        // Associa as funções aos botões
+        document.getElementById("btnGustavo").addEventListener("click", mostrarGustavo);
+        document.getElementById("btnGuilherme").addEventListener("click", mostrarGuilherme);
+        document.getElementById("btnJoao").addEventListener("click", mostrarJoao);
+        document.getElementById("btnVinicius").addEventListener("click", mostrarVinicius);
+    </script>
+
   </body>
   {% endblock body%}
 </html>
