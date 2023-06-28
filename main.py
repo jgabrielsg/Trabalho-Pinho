@@ -6,9 +6,13 @@ from bokeh.layouts import column
 from modulos import graphs_gustavo
 from modulos import graphs_joao
 
-
 from os.path import dirname, join #necessário pro bokeh achar os arquivos
 import pandas as pd
+
+from bokeh.command.bootstrap import main
+#Função pra rodar o bokeh server diretamente do main.py
+if __name__ == "__main__":
+    main(["bokeh", "serve", "--show", "../Trabalho-Pinho"])
 
 #Carrega o dataframe
 df = pd.read_csv(join(dirname(__file__), 'CSVs', 'prouni.csv')) 
