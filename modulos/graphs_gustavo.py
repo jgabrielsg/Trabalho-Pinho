@@ -24,6 +24,16 @@ def Gustavo_plot1(df):
     plot1.yaxis.axis_label = "Beneficiários"
     plot1.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os números apareçam em notação científica
 
+    #Configura a localização das ferramentas do gráfico
+    plot1.toolbar.logo = None # Remove a logo no canto
+    
+    #Configura o título do gráfico
+    plot1.title.text = "Quantidade de bolsas anuais por sexo"
+    plot1.title.text_font = "Arial"
+    plot1.title.text_font_size = "13pt"
+    plot1.title.text_font_style = "bold"
+    plot1.title.align = "center"
+
     #Cria os datasources com base no sexo, para poder plotar separadamente
     dataSourceF = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "F"])
     dataSourceM = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "M"])
@@ -42,11 +52,21 @@ def Gustavo_plot2(df):
     df2 = df2.sort_values(['Bolsas'], ascending=False).head(10)
 
     #Cria o objeto do gráfico e o arruma
-    plot2 = figure(x_range=df2["NOME_CURSO_BOLSA"], width=1000, height=480, tools="box_zoom, pan, reset", name = "Barra_Gustavo")
+    plot2 = figure(x_range=df2["NOME_CURSO_BOLSA"], width=1000, height=480, tools="", name = "Barra_Gustavo")
     plot2.xaxis.axis_label = "Curso"
     plot2.yaxis.axis_label = "Quantidade"
     plot2.xaxis.major_label_orientation = 1
     plot2.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os números apareçam em notação científica
+
+    #Configura a localização das ferramentas do gráfico
+    plot2.toolbar.logo = None # Remove a logo no canto
+    
+    #Configura o título do gráfico
+    plot2.title.text = "Cursos mais frequêntes no ProUni"
+    plot2.title.text_font = "Arial"
+    plot2.title.text_font_size = "13pt"
+    plot2.title.text_font_style = "bold"
+    plot2.title.align = "center"
 
     plot2.vbar(x=df2["NOME_CURSO_BOLSA"], top=df2["Bolsas"], width=0.4)
     plot2.y_range.start = 0
@@ -97,10 +117,13 @@ def Gustavo_plot3(df, municipios):
                          label_standoff = 13, width=8, location=(0,0))
     mapa.add_layout(color_bar, 'right')
 
+    #Configura a localização das ferramentas do gráfico
+    mapa.toolbar.logo = None # Remove a logo no canto
+
     return mapa
 
 def cria_mapa():
     mapa = figure(x_range=(-8100000, -3900000), y_range=(-1650000, -1000000),
-                  x_axis_type="mercator", y_axis_type="mercator", name="Mapa_Gustavo")
+                  x_axis_type="mercator", y_axis_type="mercator", name="Mapa_Gustavo", tools="pan, box_zoom, wheel_zoom, reset")
     mapa.add_tile("CartoDB Positron No Labels", retina=False)
     return mapa

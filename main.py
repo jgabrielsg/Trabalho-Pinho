@@ -1,6 +1,6 @@
 
 from bokeh.plotting import curdoc
-from bokeh.io import show
+from bokeh.io import show, output_file, save
 
 from modulos import graphs_gustavo
 from modulos import graphs_joao
@@ -8,6 +8,8 @@ from modulos import graphs_vinicius
 
 from os.path import dirname, join #necessário pro bokeh achar os arquivos
 import pandas as pd
+
+output_file('plots.html')
 
 from bokeh.command.bootstrap import main
 #Função pra rodar o bokeh server diretamente do main.py
