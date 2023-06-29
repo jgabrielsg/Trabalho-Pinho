@@ -1,4 +1,3 @@
-
 from bokeh.plotting import curdoc
 from bokeh.io import show, output_file, save
 

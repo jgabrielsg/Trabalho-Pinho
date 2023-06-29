@@ -1,0 +1,339 @@
+{% from macros import embed %}
+<!DOCTYPE html>
+<html lang="en">
+  {% block head %}
+  <head>
+  {% block inner_head %}
+    <meta charset="utf-8">
+    <title>{% block title %}{{ title | e if title else "Bokeh Plot" }}{% endblock %}</title>
+  {%  block preamble -%}{%- endblock %}
+  {%  block resources %}
+    <style>
+      html, body {
+        box-sizing: border-box;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      /* Defina o estilo do quadrado */
+      .square {
+        width: 100%; /* Largura do quadrado */
+        top: 0; /* Distância do topo */
+        height: 160px; /* Altura do quadrado */
+        background-color: #e0ffff; /* Cor de fundo do quadrado */
+        position: absolute;
+        z-index: -1;
+      }
+      nav {
+        margin: 10px;
+      }
+      button {
+        background-color: #008b8b; /* Cor de fundo */
+        color: white; /* Cor do texto */
+        padding: 10px 20px; /* Espaçamento interno */
+        border: none; /* Removendo a borda */
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra */
+        cursor: pointer; /* Cursor ao passar o mouse */
+      }
+      h1 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 30px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      h6 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      header img {
+        display: block; /* Fazer a imagem ocupar todo o espaço disponível */
+        width: 15%; /* Largura da imagem */
+        float: right; /* Alinhar à direita */
+        margin-bottom: 10px; /* Espaçamento inferior */
+        top: 10px; /* Distância do topo */
+        right: 10px; /* Distância da direita */
+      }
+      article {
+        position: relative;
+        text-align: justify;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+        width: 60%; /* Define a largura para 60% */
+        float: left; /* Alinha à esquerda */
+      }
+      article h2{
+        text-align: justify;
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      article p {
+        text-align: justify;
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #092929;
+      }
+      aside {
+        float: right; /* Alinhar à direita */
+        text-align: justify;
+        width: 35%; /* Largura da div */
+        padding-left: 10px; /* Espaçamento à esquerda */
+        margin-top: 20px;
+        margin-right: 5px;
+      }
+      aside img {
+        display: block; /* Fazer a imagem ocupar todo o espaço disponível */
+        width: 100%; /* Largura da imagem */
+        margin-bottom: 10px; /* Espaçamento inferior */
+        margin-right: 10px;
+      }
+      #graficosGustavo {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosGuilherme {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosJoao {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosVinicius {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+    </style>
+  {%   block css_resources -%}
+    {{- bokeh_css if bokeh_css }}
+  {%-  endblock css_resources %}
+  {%   block js_resources -%}
+    {{  bokeh_js if bokeh_js }}
+  {%-  endblock js_resources %}
+  {%  endblock resources %}
+  {%  block postamble %}{% endblock %}
+  {% endblock inner_head %}
+  </head>
+  {% endblock head%}
+  {% block body %}
+
+  <body>
+    <div class="container">
+      <div class="square"></div>
+    </div>
+    <header>
+      <h1>Trabalho de Visualização de Dados</h1>
+      <h6>Integrantes: Gustavo Bianchi, João Gabriel, Guilherme Buss e Vinicius Nascimento</h6>
+      <img src="https://cpdoc.fgv.br/sites/default/files/inline-images/logo_fgv_-_fundacao_getulio_vargas.png" alt="FGV">
+    </header>
+
+    <nav>
+      <!-- Botões para mostrar os gráficos -->
+      <button id="btnPrincipal">Página Inicial</button>
+      <button id="btnGustavo">Gráficos Gustavo</button>
+      <button id="btnGuilherme">Gráficos Guilherme</button>
+      <button id="btnJoao">Gráficos João</button>
+      <button id="btnVinicius">Gráficos Vinicius</button>
+    </nav>
+
+    <div class="inicial">
+      <div id="conteudo">
+        <article>
+          <h2>Introdução</h2>
+          <p>
+            Esse trabalho tem como objetivo a criação de gráficos interativos utilizando a biblioteca Bokeh, em Python.
+            Para isso, foram utilizados dados do site <a href="https://www.kaggle.com/">Kaggle</a>. A base de dados utilizada
+            foi sobre os dados do Prouni de 2005 a 2019, disponível <a href="https://www.kaggle.com/datasets/lfarhat/brasil-students-scholarship-prouni-20052019">aqui</a>.
+          </p>
+          <h2>Metodologia</h2>
+          <p>
+            Para a criação dos gráficos, foi utilizado a biblioteca Bokeh, em Python. A biblioteca Bokeh é uma biblioteca 
+            criada em 2013, que permite a criação de gráficos interativos em Python, com o objetivo de ser uma forma simples
+            de criar gráficos interativos, tanto os mais simples quanto os mais complexos. Utilizamos diversas das funções do
+            Bokeh, como o ColumnDataSource, para criar os dados que seriam utilizados nos gráficos, e o figure, para criar os
+            gráficos em si. Após termos os gráficos criados, colocamo-los em uma página HTML, utilizando o Jinja2, que é um
+            template engine para Python, que permite a criação de páginas HTML dinâmicas, com a possibilidade de utilizar
+            variáveis e estruturas de controle do Python.
+          </p>
+          <p>
+            Para a criação da página HTML, utilizamos o template padrão do Bokeh,
+            que já possui uma estrutura básica de HTML, e adicionamos o nosso conteúdo, como os gráficos e os botões para
+            alternar entre os gráficos.
+            Dentre as funcionalidades que foram implementadas, temos a possibilidade de alternar entre a página inicial e os
+            gráficos, e a possibilidade de alternar entre os gráficos de cada integrante. Para isso foi utilizado o JavaScript,
+            que permite a criação de funções que são executadas ao clicar em um botão. Também foi utilizado o CSS, para a
+            estilização da página, deixando-a mais agradável visualmente.
+          </p>
+          <h2>Funcionalidades e Gráficos</h2>
+          <p>
+            Foram-se criados diversos gráficos entre os participantes, como gráficos de barras, gráficos de linhas, gráficos de
+            área, gráficos de histograma e gráficos de mapa. Os gráficos possuem certas funcionalidades, como a possibilidade
+            de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
+            Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
+          </p>
+        </article>
+
+        <aside>
+          <img src="https://70anos.fgv.br/sites/70anos.fgv.br/files/styles/large/public/prcdio_sede.jpg?itok=I8ZHAcce" alt="FGV">
+        </aside>
+      </div>
+    </div>
+
+    <div class="nao_inicial">
+      {% block inner_body %}
+        {% block contents %}
+        {% for doc in docs %}
+        {{ embed(doc) if doc.elementid }}
+        {%- for root in doc.roots %}
+        {% block root scoped %}
+
+        <div id="divisaoGustavo", style="display: none;">
+          <div id="graficosGustavo">
+              {{ embed(roots.Linha_Gustavo) }}
+              {{ embed(roots.Barra_Gustavo) }}
+              {{ embed(roots.Mapa_Gustavo) }}
+          </div>
+          <aside>
+            <p>
+              Uma vila era legal
+            </p>
+            <p>
+              Duas vilas são ainda mais! Uau, estou encantado com a beleza das vilas. Três vilas são ainda mais! Uau, estou ainda mais feliz agora.
+            </p>
+          </aside>
+        </div>
+
+      <div id="divisaoGuilherme", style="display: none;">
+        <div id="graficosGuilherme">
+            <!-- Colocar os gráficos criados aqui -->
+        </div>
+        <aside>
+          <p>
+            Cinco testes foram feitos para verificar a eficácia do método. Os testes foram feitos com 1, 2, 3, 4 e 5 vilas.
+          </p>
+          <p>
+            Porém, nenhuma delas funcionou. Estávamos desesperados, pois não sabíamos o que fazer. Então, decidimos fazer mais um teste.
+          </p>
+        </aside>
+      </div>
+
+      <div id="divisaoJoao", style="display: none;">
+        <div id="graficosJoao">
+            {{ embed(roots.Histograma_Joao) }}
+            {{ embed(roots.Area_Joao) }}
+            {{ embed(roots.Linhas_Joao) }}
+        </div>
+        <aside>
+          <p>
+            O teste final foi feito da pior maneira possível. Pensávamos estar fazer o teste certo, mas não estávamos. Foi um desastre.
+          </p>
+          <p>
+            Perdi. Eu perdi, nós perdemos e vocês perderam. Perdemos tudo. Perdemos a esperança, perdemos a fé, perdemos a vida.
+          </p>
+        </aside>
+      </div>
+
+      <div id="divisaoVinicius", style="display: none;">
+        <div id="graficosVinicius">
+            {{ embed(roots.Linhas_Vinicius) }}
+            {{ embed(roots.Racas_Vinicius) }}
+            {{ embed(roots.Sexos_Vinicius) }}
+        </div>
+      </div>
+
+        {% endblock %}
+        {% endfor %}
+        {% endfor %}
+        {% endblock contents %}
+      {% endblock inner_body %}
+    </div>
+
+    <script>
+        // Função para alternar entre a exibição inicial e os gráficos
+        function pagina_inicial() {
+            document.getElementById("conteudo").style.display = "block";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
+        }
+
+        // Funções para mostrar apenas os gráficos do botão correspondente
+        function mostrarGustavo() {
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "block";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
+        }
+
+        function mostrarGuilherme() {
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "block";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
+        }
+
+        function mostrarJoao() {
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "block";
+            document.getElementById("divisaoVinicius").style.display = "none";
+        }
+
+        function mostrarVinicius() {
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "block";
+        }
+
+        // Associa as funções aos botões
+        document.getElementById("btnGustavo").addEventListener("click", mostrarGustavo);
+        document.getElementById("btnGuilherme").addEventListener("click", mostrarGuilherme);
+        document.getElementById("btnJoao").addEventListener("click", mostrarJoao);
+        document.getElementById("btnVinicius").addEventListener("click", mostrarVinicius);
+        document.getElementById('btnPrincipal').addEventListener('click', pagina_inicial);
+
+    </script>
+
+    {{ plot_script | indent(4) }}
+  </body>
+  {% endblock body%}
+</html>
