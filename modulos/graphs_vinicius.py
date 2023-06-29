@@ -106,7 +106,7 @@ def Vinicius_plot2(df):
 
     # Definindo alguns parâmetros do gráfico
     plot2 = figure(x_range=df_bolsa_por_estado["SIGLA_UF_BENEFICIARIO_BOLSA"].unique(), width = 1400, 
-                tools = "box_zoom, pan, reset, save, wheel_zoom", name = "Raças_Vinicius")
+                tools = "box_zoom, pan, reset, save, wheel_zoom", name = "Racas_Vinicius")
 
     # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
     quantidade_de_bolsas_da_barra = HoverTool(tooltips = [("QUANTIDADE", "@QUANTIDADE")])
@@ -130,7 +130,7 @@ def Vinicius_plot2(df):
     # Criando o gráfico
     for numero_da_linha, raça in enumerate(raças_valores_unicos):
         source = dicionario_fonte_raça[raça]
-        barra = plot2.vbar(x = dodge("SIGLA_UF_BENEFICIARIO_BOLSA", numero_da_linha/(len(raças_valores_unicos)+2), range = plot2.x_range),
+        plot2.vbar(x = dodge("SIGLA_UF_BENEFICIARIO_BOLSA", numero_da_linha/(len(raças_valores_unicos)+4), range = plot2.x_range),
                     top="QUANTIDADE", width=0.2, source = source, color = cores_raça[numero_da_linha], legend_label = raça)
 
     # Configurando o título do gráfico
@@ -145,6 +145,7 @@ def Vinicius_plot2(df):
     plot2.xaxis.axis_label_text_font = "Arial"
     plot2.xaxis.axis_label_text_font_size = "13pt"
     plot2.xaxis.axis_label_text_font_style = "bold"
+    plot2.x_range.range_padding = 0.03  # Move o gráfico para a esquerda
 
     # Configurando o eixo y
     plot2.yaxis.axis_label = "BOLSAS"

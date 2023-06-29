@@ -20,17 +20,18 @@ df = pd.read_csv(join(dirname(__file__), 'CSVs', 'prouni.csv'))
 Gustavo_plot1 = graphs_gustavo.Gustavo_plot1(df)
 Gustavo_plot2 = graphs_gustavo.Gustavo_plot2(df)
 
+#Carrega as informações adicionais necessárias para o mapa
+municipios = pd.read_csv(join(dirname(__file__), 'CSVs', 'municipios.csv'))
+
+Gustavo_plot3 = graphs_gustavo.Gustavo_plot3(df, municipios)
+
 Joao_plot1 = graphs_joao.Joao_plot1(df)
 Joao_plot2 = graphs_joao.Joao_plot2(df)
 Joao_plot3 = graphs_joao.Joao_plot3(df)
 Joao_plot4 = graphs_joao.Joao_plot4(df)
 
+Vinicius_plot2 = graphs_vinicius.Vinicius_plot2(df)
 Vinicius_plot3 = graphs_vinicius.Vinicius_plot3(df)
-
-#Carrega as informações adicionais necessárias para o mapa
-municipios = pd.read_csv(join(dirname(__file__), 'CSVs', 'municipios.csv'))
-
-Gustavo_plot3 = graphs_gustavo.Gustavo_plot3(df, municipios)
 
 #permite que o index.html leia os gráficos
 curdoc().add_root(Gustavo_plot1)
@@ -42,4 +43,5 @@ curdoc().add_root(Joao_plot1)
 curdoc().add_root(Joao_plot3)
 curdoc().add_root(Joao_plot4)
 
+curdoc().add_root(Vinicius_plot2)
 curdoc().add_root(Vinicius_plot3)
