@@ -71,9 +71,7 @@ def Gustavo_plot3(df, municipios):
     df3 = pd.merge(df3, municipios, how = 'inner', on = ["MUNICIPIO_BENEFICIARIO_BOLSA"])
 
     #Define um tema pro mapa e o cria
-    mapa = figure(x_range=(-8100000, -3900000), y_range=(-1650000, -1000000),
-               x_axis_type="mercator", y_axis_type="mercator", name="Mapa_Gustavo")
-    mapa.add_tile("CartoDB Positron No Labels", retina=False)
+    mapa = cria_mapa()
 
     #Arruma o sistema de projeção de latitude e latitude dos nossos dados para o que o Bokeh entende, que é o Web Mercator
     wgs84 = pyproj.CRS("EPSG:4326")
@@ -99,4 +97,10 @@ def Gustavo_plot3(df, municipios):
                          label_standoff = 13, width=8, location=(0,0))
     mapa.add_layout(color_bar, 'right')
 
+    return mapa
+
+def cria_mapa():
+    mapa = figure(x_range=(-8100000, -3900000), y_range=(-1650000, -1000000),
+                  x_axis_type="mercator", y_axis_type="mercator", name="Mapa_Gustavo")
+    mapa.add_tile("CartoDB Positron No Labels", retina=False)
     return mapa
