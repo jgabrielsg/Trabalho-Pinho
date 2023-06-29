@@ -19,7 +19,7 @@
       .square {
         width: 100%; /* Largura do quadrado */
         top: 0; /* Distância do topo */
-        height: 170px; /* Altura do quadrado */
+        height: 160px; /* Altura do quadrado */
         background-color: #e0ffff; /* Cor de fundo do quadrado */
         position: absolute;
         z-index: -1;
@@ -57,6 +57,14 @@
         font-family: Arial, Helvetica, sans-serif;
         color: #092929;
       }
+      header img {
+        display: block; /* Fazer a imagem ocupar todo o espaço disponível */
+        width: 15%; /* Largura da imagem */
+        float: right; /* Alinhar à direita */
+        margin-bottom: 10px; /* Espaçamento inferior */
+        top: 10px; /* Distância do topo */
+        right: 10px; /* Distância da direita */
+      }
       article {
         position: relative;
         text-align: justify;
@@ -92,14 +100,41 @@
       }
       aside {
         float: right; /* Alinhar à direita */
+        text-align: justify;
         width: 35%; /* Largura da div */
-        padding-left: 20px; /* Espaçamento à esquerda */
+        padding-left: 10px; /* Espaçamento à esquerda */
         margin-top: 20px;
+        margin-right: 5px;
       }
       aside img {
         display: block; /* Fazer a imagem ocupar todo o espaço disponível */
         width: 100%; /* Largura da imagem */
         margin-bottom: 10px; /* Espaçamento inferior */
+        margin-right: 10px;
+      }
+      #graficosGustavo {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosGuilherme {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosJoao {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
+      }
+      #graficosVinicius {
+        position: relative;
+        margin-top: 20px;
+        width: 60%;
+        float: left;
       }
     </style>
   {%   block css_resources -%}
@@ -122,6 +157,7 @@
     <header>
       <h1>Trabalho de Visualização de Dados</h1>
       <h6>Integrantes: Gustavo Bianchi, João Gabriel, Guilherme Buss e Vinicius Nascimento</h6>
+      <img src="https://cpdoc.fgv.br/sites/default/files/inline-images/logo_fgv_-_fundacao_getulio_vargas.png" alt="FGV">
     </header>
 
     <nav>
@@ -134,7 +170,7 @@
     </nav>
 
     <div class="inicial">
-      <div class="conteudo">
+      <div id="conteudo">
         <article>
           <h2>Introdução</h2>
           <p>
@@ -171,7 +207,7 @@
         </article>
 
         <aside>
-          <img src="https://s2-ge.glbimg.com/aOUrYWXY2kA4R9nf2h0mMvBpnTo=/0x206:1538x1766/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2023/K/9/DR0RphQE6QbyCwWAWwBw/ennervalenciainter.jpg" alt="Inter">
+          <img src="https://70anos.fgv.br/sites/70anos.fgv.br/files/styles/large/public/prcdio_sede.jpg?itok=I8ZHAcce" alt="FGV">
         </aside>
       </div>
     </div>
@@ -184,25 +220,71 @@
         {%- for root in doc.roots %}
         {% block root scoped %}
 
-        <div id="graficosGustavo">
-            {{ embed(roots.Linha_Gustavo) }}
-            {{ embed(roots.Barra_Gustavo) }}
-            {{ embed(roots.Mapa_Gustavo) }}
+        <div id="divisaoGustavo", style="display: none;">
+          <div id="graficosGustavo">
+              {{ embed(roots.Linha_Gustavo) }}
+              {{ embed(roots.Barra_Gustavo) }}
+              {{ embed(roots.Mapa_Gustavo) }}
+          </div>
+          <aside>
+            <p>
+              Uma vila era legal
+            </p>
+            <p>
+              Duas vilas são ainda mais! Uau, estou encantado com a beleza das vilas. Três vilas são ainda mais! Uau, estou ainda mais feliz agora.
+            </p>
+          </aside>
         </div>
 
+      <div id="divisaoGuilherme", style="display: none;">
         <div id="graficosGuilherme">
             <!-- Colocar os gráficos criados aqui -->
         </div>
+        <aside>
+          <p>
+            Cinco testes foram feitos para verificar a eficácia do método. Os testes foram feitos com 1, 2, 3, 4 e 5 vilas.
+          </p>
+          <p>
+            Porém, nenhuma delas funcionou. Estávamos desesperados, pois não sabíamos o que fazer. Então, decidimos fazer mais um teste.
+          </p>
+        </aside>
+      </div>
 
+      <div id="divisaoJoao", style="display: none;">
         <div id="graficosJoao">
             {{ embed(roots.Histograma_Joao) }}
             {{ embed(roots.Area_Joao) }}
             {{ embed(roots.Linhas_Joao) }}
         </div>
+        <aside>
+          <p>
+            O teste final foi feito da pior maneira possível. Pensávamos estar fazer o teste certo, mas não estávamos. Foi um desastre.
+          </p>
+          <p>
+            Perdi. Eu perdi, nós perdemos e vocês perderam. Perdemos tudo. Perdemos a esperança, perdemos a fé, perdemos a vida.
+          </p>
+        </aside>
+      </div>
 
+      <div id="divisaoVinicius", style="display: none;">
         <div id="graficosVinicius">
             <!-- Colocar os gráficos criados aqui -->
         </div>
+        <aside>
+          <p>
+            Se algum dia souberem...
+          </p>
+          <p>
+            Se há alguma chance...
+          </p>
+          <p>
+            Nos avisem, por favor.
+          </p>
+          <p>
+            Estamos desesperados.
+          </p>
+        </aside>
+      </div>
 
         {% endblock %}
         {% endfor %}
@@ -214,43 +296,44 @@
     <script>
         // Função para alternar entre a exibição inicial e os gráficos
         function pagina_inicial() {
-            const inicial = document.querySelector('.inicial');
-            const graficos = document.querySelector('.nao_inicial');
-
-            inicial.style.display = inicial.style.display === 'none' ? 'block' : 'none';
-            graficos.style.display = graficos.style.display === 'none' ? 'block' : 'none';
+            document.getElementById("conteudo").style.display = "block";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
         }
-
-        // Associa a função ao botão
-        document.getElementById('btnPrincipal').addEventListener('click', pagina_inicial);
 
         // Funções para mostrar apenas os gráficos do botão correspondente
         function mostrarGustavo() {
-            document.getElementById("graficosGustavo").style.display = "block";
-            document.getElementById("graficosGuilherme").style.display = "none";
-            document.getElementById("graficosJoao").style.display = "none";
-            document.getElementById("graficosVinicius").style.display = "none";
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "block";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
         }
 
         function mostrarGuilherme() {
-            document.getElementById("graficosGustavo").style.display = "none";
-            document.getElementById("graficosGuilherme").style.display = "block";
-            document.getElementById("graficosJoao").style.display = "none";
-            document.getElementById("graficosVinicius").style.display = "none";
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "block";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "none";
         }
 
         function mostrarJoao() {
-            document.getElementById("graficosGustavo").style.display = "none";
-            document.getElementById("graficosGuilherme").style.display = "none";
-            document.getElementById("graficosJoao").style.display = "block";
-            document.getElementById("graficosVinicius").style.display = "none";
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "block";
+            document.getElementById("divisaoVinicius").style.display = "none";
         }
 
         function mostrarVinicius() {
-            document.getElementById("graficosGustavo").style.display = "none";
-            document.getElementById("graficosGuilherme").style.display = "none";
-            document.getElementById("graficosJoao").style.display = "none";
-            document.getElementById("graficosVinicius").style.display = "block";
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("divisaoGustavo").style.display = "none";
+            document.getElementById("divisaoGuilherme").style.display = "none";
+            document.getElementById("divisaoJoao").style.display = "none";
+            document.getElementById("divisaoVinicius").style.display = "block";
         }
 
         // Associa as funções aos botões
@@ -258,6 +341,7 @@
         document.getElementById("btnGuilherme").addEventListener("click", mostrarGuilherme);
         document.getElementById("btnJoao").addEventListener("click", mostrarJoao);
         document.getElementById("btnVinicius").addEventListener("click", mostrarVinicius);
+        document.getElementById('btnPrincipal').addEventListener('click', pagina_inicial);
     </script>
 
     {{ plot_script | indent(4) }}
