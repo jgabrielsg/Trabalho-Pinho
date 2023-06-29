@@ -1,7 +1,6 @@
 
 from bokeh.plotting import curdoc
-from bokeh.models import Button
-from bokeh.layouts import column
+from bokeh.io import show
 
 from modulos import graphs_gustavo
 from modulos import graphs_joao

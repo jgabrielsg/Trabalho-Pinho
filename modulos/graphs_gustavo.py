@@ -3,7 +3,6 @@
 from bokeh.io import output_file, save, show
 from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
 from bokeh.plotting import figure
-from bokeh.models.tiles import WMTSTileSource #bibliotecas necessárias para mapa
 from bokeh.transform import linear_cmap
 
 import pyproj
@@ -59,7 +58,7 @@ def Gustavo_plot2(df):
 def Gustavo_plot3(df, municipios):
 
     #Lê os dados de municipios e deixa somente as colunas que nos importam (nome, latitude, longitude)
-    municipios = municipios[["nome", "latitude", "longitude"]]
+    municipios = municipios.drop(['codigo_ibge', 'capital', 'codigo_uf', 'siafi_id', 'ddd', 'fuso_horario'], axis = 1)
 
     #Remove acentos e letras maíusculas dos nomes dos municípios, já que este é o formato de nome que está no csv do ProUni
     municipios["nome"] = municipios["nome"].str.lower().str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
@@ -74,7 +73,7 @@ def Gustavo_plot3(df, municipios):
     #Define um tema pro mapa e o cria
     mapa = figure(x_range=(-8100000, -3900000), y_range=(-1650000, -1000000),
                x_axis_type="mercator", y_axis_type="mercator", name="Mapa_Gustavo")
-    mapa.add_tile(WMTSTileSource(url='http://tile.stamen.com/toner/{Z}/{X}/{Y}.png'))
+    mapa.add_tile("CartoDB Positron No Labels", retina=False)
 
     #Arruma o sistema de projeção de latitude e latitude dos nossos dados para o que o Bokeh entende, que é o Web Mercator
     wgs84 = pyproj.CRS("EPSG:4326")
