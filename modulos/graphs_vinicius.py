@@ -1,5 +1,5 @@
 from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Range1d
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
@@ -67,7 +67,6 @@ def Vinicius_plot1(df):
     plot1.xaxis.axis_label_text_font = "Arial"
     plot1.xaxis.axis_label_text_font_size = "13pt"
     plot1.xaxis.axis_label_text_font_style = "bold"
-    plot1.xaxis.ticker = df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"].unique()  # Mostra todos os anos
 
     # Configurando o eixo y
     plot1.yaxis.axis_label = "BOLSISTAS"

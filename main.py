@@ -30,6 +30,7 @@ Joao_plot2 = graphs_joao.Joao_plot2(df)
 Joao_plot3 = graphs_joao.Joao_plot3(df)
 Joao_plot4 = graphs_joao.Joao_plot4(df)
 
+Vinicius_plot1 = graphs_vinicius.Vinicius_plot1(df)
 Vinicius_plot2 = graphs_vinicius.Vinicius_plot2(df)
 Vinicius_plot3 = graphs_vinicius.Vinicius_plot3(df)
 
@@ -43,5 +44,6 @@ curdoc().add_root(Joao_plot1)
 curdoc().add_root(Joao_plot3)
 curdoc().add_root(Joao_plot4)
 
+curdoc().add_root(Vinicius_plot1)
 curdoc().add_root(Vinicius_plot2)
 curdoc().add_root(Vinicius_plot3)
