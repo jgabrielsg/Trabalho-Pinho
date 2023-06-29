@@ -5,6 +5,7 @@ from bokeh.layouts import column
 
 from modulos import graphs_gustavo
 from modulos import graphs_joao
+from modulos import graphs_vinicius
 
 from os.path import dirname, join #necessário pro bokeh achar os arquivos
 import pandas as pd
@@ -25,6 +26,10 @@ Joao_plot2 = graphs_joao.Joao_plot2(df)
 Joao_plot3 = graphs_joao.Joao_plot3(df)
 Joao_plot4 = graphs_joao.Joao_plot4(df)
 
+Vinicius_plot1 = graphs_vinicius.Vinicius_plot1(df)
+Vinicius_plot2 = graphs_vinicius.Vinicius_plot2(df)
+Vinicius_plot3 = graphs_vinicius.Vinicius_plot3(df)
+
 #Carrega as informações adicionais necessárias para o mapa
 municipios = pd.read_csv(join(dirname(__file__), 'CSVs', 'municipios.csv'))
 
@@ -39,3 +44,7 @@ curdoc().add_root(Joao_plot1)
 # curdoc().add_root(Joao_plot2)
 curdoc().add_root(Joao_plot3)
 curdoc().add_root(Joao_plot4)
+
+curdoc().add_root(Vinicius_plot1)
+curdoc().add_root(Vinicius_plot2)
+curdoc().add_root(Vinicius_plot3)
