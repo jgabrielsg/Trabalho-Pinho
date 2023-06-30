@@ -26,7 +26,7 @@ def Vinicius_plot1(df):
     plot1 = figure(tools = "box_zoom, pan, reset, save, wheel_zoom", width = 1400, name = "Linhas_Vinicius")
 
     # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
-    quantidade_de_bolsas_da_linha = HoverTool(tooltips = [("QUANTIDADE", "@QUANTIDADE")])
+    quantidade_de_bolsas_da_linha = HoverTool(tooltips = [("ANO", "@ANO_CONCESSAO_BOLSA"), ("QUANTIDADE", "@QUANTIDADE")])
     plot1.add_tools(quantidade_de_bolsas_da_linha)
 
     # Configurando a estética dos parâmetros
