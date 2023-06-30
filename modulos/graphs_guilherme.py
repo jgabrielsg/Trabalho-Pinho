@@ -2,7 +2,7 @@ import pathlib
 import pandas as pd
 import numpy as np
 
-from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter, Span, Label
+from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter, Span, Label, Title
 from bokeh.io import output_file, save, show, curdoc
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
@@ -11,11 +11,11 @@ from bokeh.palettes import Category20
 from datacleaning import criar_dataset
 from bokeh.themes import Theme
 
-# import os
+import os
 
-# caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'theme.yaml')
+caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tema_gui.yaml')
 
-# curdoc().theme = Theme(filename=caminho_theme)
+curdoc().theme = Theme(filename=caminho_theme)
 
 output_file("Testes/teste_guilherme.html")
 
@@ -26,32 +26,56 @@ df = criar_dataset(DATA)
 #------Primeiro Gráfico: Relação entre região e acesso de Deficientes físicos a bolsas
 
 def Guilherme_plot1(df):
-    # Filtra os dados para bolsistas com deficiência física.
-    df_filtrado = df[df['BENEFICIARIO_DEFICIENTE_FISICO'] == 'sim']
+    # Filtra os dados para o Sudeste.
+    df_sudeste = df[df['BENEFICIARIO_DEFICIENTE_FISICO'] == 'sim']
+    #Filtra então para bolsistas com deficiência física.
+    df_deficientes_sudeste = df_sudeste[df_sudeste["REGIAO_BENEFICIARIO_BOLSA"] == 'SUDESTE']
 
-    # Nos dados filtrados separamos todos os dados em grupos por região e ano, e contamos a quantidade de dados em cada grupo.
-    df_agrupado = df_filtrado.groupby(["ANO_CONCESSAO_BOLSA", "REGIAO_BENEFICIARIO_BOLSA"]).size().reset_index(name='Quantidade')
+    # Nos dados filtrados separamos todos os dados em grupos por estado e ano, e contamos a quantidade de dados em cada grupo.
+    df_agrupado = df_deficientes_sudeste.groupby(["ANO_CONCESSAO_BOLSA", "SIGLA_UF_BENEFICIARIO_BOLSA"]).size().reset_index(name='Quantidade')
+
+    # Contamos a quantidade de dados totais para fazer uma linha que represente o Sudeste como todo.
+    df_deficientes_sudeste = df_deficientes_sudeste.groupby(["ANO_CONCESSAO_BOLSA"]).size().reset_index(name='Quantidade')
 
     # Estrutura básica do gráfico
     plot1 = figure(width=1000, height=480, tools="box_zoom, pan, reset")
     plot1.xaxis.axis_label = "Ano de Concessão da Bolsa"
     plot1.yaxis.axis_label = "Número de beneficiados"
-    plot1.title.text = "Número de deficientes físicos com acesso a bolsa\npor região por ano"
+    plot1.title.text = "Número de deficientes físicos com acesso a bolsa\nno Sudeste por ano"
+
+    # Define o começo e o fim do eixo x.
+    plot1.x_range.start = 2005
+    plot1.x_range.end = 2019
+    
+    # Lista de cores para usar nas linhas.
+    cores =  ['#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
+
+    # Remove o grid
+    plot1.xgrid.grid_line_color = None
+    plot1.ygrid.grid_line_color = None
 
     # Cria uma linha para cada região
     for i, row in df_agrupado.iterrows():
         # Armazena o nome da região atual.
-        regiao = row['REGIAO_BENEFICIARIO_BOLSA']
+        estado = row['SIGLA_UF_BENEFICIARIO_BOLSA']
         
         # Filtra os dados para a região atual.
-        df_regiao = df_agrupado[df_agrupado['REGIAO_BENEFICIARIO_BOLSA'] == regiao]
+        df_estado = df_agrupado[df_agrupado['SIGLA_UF_BENEFICIARIO_BOLSA'] == estado]
         
         # Obtém os valores de y (Total de bolsistas) por x (ano) para a região.
-        eixo_x = df_regiao['ANO_CONCESSAO_BOLSA']
-        eixo_y = df_regiao['Quantidade']
+        eixo_x = df_estado['ANO_CONCESSAO_BOLSA']
+        eixo_y = df_estado['Quantidade']
         
          # Cria a linha com essas informações e a nomeia com o nome armazenado.
-        plot1.line(eixo_x, eixo_y, legend_label=regiao)
+        plot1.line(eixo_x, eixo_y, legend_label=estado, line_width = 2, line_color=cores[i % len(cores)], line_alpha = 0.5)
+
+    # Cria a linha do Sudeste.
+    plot1.line(df_deficientes_sudeste['ANO_CONCESSAO_BOLSA'], df_deficientes_sudeste['Quantidade'], line_width = 4, legend_label="Sudeste", line_color= 'black')
+
+    # Adiciona a legenda ao gráfico
+    plot1.legend.location = "top_left"
+    plot1.legend.title = "Estado/região"
+    plot1.legend.label_text_font_size = "10pt"
 
     return plot1
 
@@ -96,10 +120,11 @@ def Guilherme_plot2(df):
     #Estrutura básica do gráfico proporcional
     plot_proporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
     plot_proporcional.xaxis.axis_label = "Estado"
-    plot_proporcional.yaxis.axis_label = "Proporção de benificiados"
-    plot_proporcional.title.text = "Proporção de deficientes físicos com acesso a bolsa em relação ao total de bolsistas\npor estado da região sudeste"
+    plot_proporcional.yaxis.axis_label = "Porcentagem dentre os bolsistas"
+    plot_proporcional.title.text = "Percentual de estudantes com deficiência física\nem relação ao total de bolsistas"
     plot_proporcional.yaxis.formatter = NumeralTickFormatter(format="0.0%")
 
+    # Remove o grid
     plot_proporcional.xgrid.grid_line_color = None
     plot_proporcional.ygrid.grid_line_color = None
 
@@ -109,13 +134,17 @@ def Guilherme_plot2(df):
             fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=destaque_ES, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
     plot_proporcional.y_range.start = 0
 
+    # Calcula a média
     media = df_deficientes_fisicos_sudeste['Proporcao'].mean()
+    # Define a linha
     linha_media = Span(dimension='width', line_color='gray', line_dash='dashed', line_width=2)
     linha_media.location = media
+    # Adiciona a linha ao gráfico
     plot_proporcional.add_layout(linha_media)
 
-    mean_label = Label(x=3, y=media, text=f"Média: {media:.2%}", text_font_size="10pt", text_color="gray")
-    plot_proporcional.add_layout(mean_label)
+    # Adiciona um nome a linha e quanto vale a média.
+    media_texto = Label(x=3, y=media, text=f"Média: {media:.2%}", text_font_size="10pt", text_color="gray")
+    plot_proporcional.add_layout(media_texto)
 
     #Gera um gridplot com os dois gráficos.
     plot2 = gridplot([[plot_desproporcional, None],[plot_proporcional, None]])          
@@ -183,10 +212,17 @@ def Guilherme_plot3(df):
             lista_y1.append((topos_das_velas[i-1] + topos_das_velas[i+1])/2)
     plot3.segment(x0=eixo_x[1:], x1=eixo_x[1:], y0=lista_y0, y1=lista_y1, color='black', line_width=2)
 
+    # Configura o grid
+    plot3.grid.visible = True
+    plot3.grid.grid_line_color = 'gray'
+    plot3.grid.grid_line_alpha = 0.2
+
     # Gera as velas.
     plot3.vbar(x=eixo_x, width=0.7, bottom=bases_das_velas, top=topos_das_velas, fill_color=cores, line_color='black')
 
     return plot3
 
+
 show(Guilherme_plot2(df))
+
 # print(df.columns)
