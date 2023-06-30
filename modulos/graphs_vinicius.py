@@ -1,5 +1,6 @@
 from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Range1d
+from bokeh.models.annotations import BoxAnnotation
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
@@ -85,6 +86,10 @@ def Vinicius_plot1(df):
     plot1.legend.title_text_font_style = "normal" # Para tirar o itálico horrível que vem por padrão
     plot1.legend.label_text_font = "Arial"
     plot1.legend.label_text_font_size = "10pt"
+
+    # Adicionando uma anotação
+    box_annotation = BoxAnnotation(left = 2007.5, right = 2009.5, bottom=0, top=120000, fill_color = "Red", fill_alpha = 0.22)
+    plot1.add_layout(box_annotation)
 
     # Configurando a área de plotagem
     plot1.border_fill_color = "white"
