@@ -10,7 +10,7 @@ import pandas as pd
 from bokeh.command.bootstrap import main
 #Função pra rodar o bokeh server diretamente do main.py
 if __name__ == "__main__":
-    main(["bokeh", "serve", "--show", "Trabalho-Pinho"])
+    main(["bokeh", "serve", "--show", "../Trabalho-Pinho"])
 
 #Carrega o dataframe
 df = pd.read_csv(join(dirname(__file__), 'CSVs', 'prouni.csv'))
