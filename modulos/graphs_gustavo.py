@@ -1,5 +1,5 @@
 from datacleaning import transforma_ColumnDataSource
-from bokeh.models import ColorBar, NumeralTickFormatter
+from bokeh.models import ColorBar, NumeralTickFormatter, HoverTool
 from bokeh.plotting import figure
 from bokeh.transform import linear_cmap
 
@@ -40,6 +40,11 @@ def Gustavo_plot1(df):
 
     plot1.legend.location = "top_left" #Tira a legenda da frente do gráfico
 
+    plot1.xgrid.grid_line_color = "lightgray"  # Define a cor da grade vertical
+    plot1.xgrid.grid_line_alpha = 0.5  # Define a transparência da grade vertical
+    plot1.ygrid.grid_line_color = "lightgray"  # Define a cor da grade horizontal
+    plot1.ygrid.grid_line_alpha = 0.5  # Define a transparência da grade horizontal
+
     return plot1
 
 #----------- Segundo Gráfico : top 10 cursos mais frequêntes no ProUni
@@ -65,8 +70,16 @@ def Gustavo_plot2(df):
     plot2.title.text_font_style = "bold"
     plot2.title.align = "center"
 
+    quantidade_de_bolsas_da_barra= HoverTool(tooltips = [("Curso", "@NOME_CURSO_BOLSA"), ("QUANTIDADE", "@Bolsas")])
+    plot2.add_tools(quantidade_de_bolsas_da_barra)
+
     plot2.vbar(x=df2["NOME_CURSO_BOLSA"], top=df2["Bolsas"], width=0.4)
     plot2.y_range.start = 0
+
+    #Adiciona hovertool nas barras
+    hover = HoverTool()
+    hover.tooltips = [("Curso", "@x"), ("Quantidade", "@top")]
+    plot2.add_tools(hover)
 
     return plot2
 
