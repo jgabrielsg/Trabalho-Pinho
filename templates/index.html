@@ -204,6 +204,10 @@
             de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
             Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
           </p>
+          <br>
+          <br>
+          <br>
+          <br>
         </article>
 
         <aside>
@@ -220,19 +224,14 @@
         {%- for root in doc.roots %}
         {% block root scoped %}
 
-        <div id="divisaoGustavo", style="display: none;">
+        <div id="divisaoGustavo">
           <div id="graficosGustavo">
               {{ embed(roots.Linha_Gustavo) }}
               {{ embed(roots.Barra_Gustavo) }}
               {{ embed(roots.Mapa_Gustavo) }}
           </div>
           <aside>
-            <p>
-              Uma vila era legal
-            </p>
-            <p>
-              Duas vilas são ainda mais! Uau, estou encantado com a beleza das vilas. Três vilas são ainda mais! Uau, estou ainda mais feliz agora.
-            </p>
+  
           </aside>
         </div>
 
@@ -241,12 +240,7 @@
             <!-- Colocar os gráficos criados aqui -->
         </div>
         <aside>
-          <p>
-            Cinco testes foram feitos para verificar a eficácia do método. Os testes foram feitos com 1, 2, 3, 4 e 5 vilas.
-          </p>
-          <p>
-            Porém, nenhuma delas funcionou. Estávamos desesperados, pois não sabíamos o que fazer. Então, decidimos fazer mais um teste.
-          </p>
+      
         </aside>
       </div>
 
@@ -257,12 +251,7 @@
             {{ embed(roots.Linhas_Joao) }}
         </div>
         <aside>
-          <p>
-            O teste final foi feito da pior maneira possível. Pensávamos estar fazer o teste certo, mas não estávamos. Foi um desastre.
-          </p>
-          <p>
-            Perdi. Eu perdi, nós perdemos e vocês perderam. Perdemos tudo. Perdemos a esperança, perdemos a fé, perdemos a vida.
-          </p>
+    
         </aside>
       </div>
 

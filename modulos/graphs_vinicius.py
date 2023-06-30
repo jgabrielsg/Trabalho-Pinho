@@ -21,6 +21,8 @@ def Vinicius_plot1(df):
 
     df_tipo_de_bolsa_por_ano = contar_repeticoes_multiplas(df, "TIPO_BOLSA", "ANO_CONCESSAO_BOLSA")
 
+    df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"] = df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"].dt.year
+    
     plot1 = figure(tools = "box_zoom, pan, reset, save, wheel_zoom", width = 1400, name = "Linhas_Vinicius")
 
     # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
