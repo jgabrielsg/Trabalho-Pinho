@@ -111,6 +111,14 @@ def Joao_plot3(df):
         y2 = df_presencial['QUANTIDADE POR ANO'].head(15)
     ))
 
+    hover = HoverTool(tooltips=[
+    ("Ano", "@x"),
+    ("Quantidade EAD", "@y1"),
+    ("Quantidade Presencial", "@y2")
+    ])
+
+    plot_modalidade.add_tools(hover)
+
     plot_modalidade.varea_stack(x='x', stackers=['y1', 'y2'], color=cores, source=source_ead_presencial,
                                 legend_label=['EAD', 'PRESENCIAL'], alpha=0.5)
 
