@@ -132,14 +132,16 @@ def Guilherme_plot3(df):
             cores.append('red')
 
     # Gera as linhas que cortam as velas.
+    lista_y0 = []
+    lista_y1 = []
     for i in range(num_anos):
-        if num_anos > i > 0:
-            plot3.segment(x0=eixo_x[i], x1=eixo_x[i], y0=bases_das_velas[i-1]-bases_das_velas[i+1], y1=topos_das_velas[i-1]-topos_das_velas[i+1], color='black', line_width=2)
-        else:
-            break
-    # plot3.segment(x0=eixo_x, x1=eixo_x, y0=bases_das_velas, y1=topos_das_velas, color='black', line_width=2)
+        if 0 < i <num_anos-1:
+            lista_y0.append((bases_das_velas[i-1] + bases_das_velas[i+1])/2)
+            lista_y1.append((topos_das_velas[i-1] + topos_das_velas[i+1])/2)
+    plot3.segment(x0=eixo_x, x1=eixo_x, y0=lista_y0, y1=lista_y1, color='black', line_width=2)
 
     # Gera as velas.
+    
     plot3.vbar(x=eixo_x, width=0.7, bottom=bases_das_velas, top=topos_das_velas, fill_color=cores, line_color='black')
 
     return plot3
