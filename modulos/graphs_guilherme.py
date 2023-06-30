@@ -1,3 +1,4 @@
+import pathlib
 import pandas as pd
 import numpy as np
 
@@ -114,7 +115,25 @@ def Guilherme_plot3(df):
         eixo_x.append(str(anos[i]) + '-' + str(anos[i+1]))
 
     # Cria o gráfico.
-    plot3 = figure(x_range=eixo_x, height=400, title="Variação de bolsistas por ano")
+    plot3 = figure(x_range=eixo_x, width =1000, height=400, tools="box_zoom, reset")
+
+    plot3.xaxis.axis_label = "Intervalo de anos"
+    plot3.yaxis.axis_label = "Número de bolsistas"
+    plot3.title.text = "Análise da variação de bolsistas entre os anos"
+    plot3.yaxis[0].formatter = NumeralTickFormatter(format="0,")
+
+    # Define o começo e o fim do eixo y.
+    plot3.y_range.start = 90000
+    plot3.y_range.end = 260000
+
+    # Gera uma legenda para as cores verde e vermelho.
+    plot3.rect([1], [1], width=1, height=1, fill_color='green', line_color='black', legend_label="Positiva")
+    plot3.rect([1], [1], width=1, height=1, fill_color='red', line_color='black', legend_label="Negativa")
+
+    # Adiciona a legenda ao gráfico
+    plot3.legend.location = "top_left"
+    plot3.legend.title = "Variação"
+    plot3.legend.label_text_font_size = "10pt"
 
     # Cria duas listas, uma com as bases: o menor dos resultados, outra com os topos: o maior deles.
     bases_das_velas = []
@@ -123,7 +142,7 @@ def Guilherme_plot3(df):
         bases_das_velas.append(min(dados_por_ano.iloc[i+1], dados_por_ano.iloc[i]))
         topos_das_velas.append(max(dados_por_ano.iloc[i+1], dados_por_ano.iloc[i]))
 
-    # Checa se a quantidade de bolsistas/dados está aumentando ou diminuindo, e adiciona a lista cores a cor verde ou vermelha respectivamente.
+    # Checa-se a quantidade de bolsistas/dados está aumentando ou diminuindo, e adiciona a lista cores a cor verde ou vermelha respectivamente.
     cores = []
     for i in range(num_anos):
         if dados_por_ano.iloc[i+1] > dados_por_ano.iloc[i]:
