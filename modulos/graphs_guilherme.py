@@ -2,7 +2,7 @@ import pathlib
 import pandas as pd
 import numpy as np
 
-from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter, Span, Label, Title
+from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter, Span, Label, Title, HoverTool
 from bokeh.io import output_file, save, show, curdoc
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
@@ -67,10 +67,10 @@ def Guilherme_plot1(df):
         eixo_y = df_estado['Quantidade']
         
          # Cria a linha com essas informações e a nomeia com o nome armazenado.
-        plot1.line(eixo_x, eixo_y, legend_label=estado, line_width = 2, line_color=cores[i % len(cores)], line_alpha = 0.5)
+        plot1.line(eixo_x, eixo_y, legend_label=estado, line_width = 3, line_color=cores[i % len(cores)], line_alpha = 0.5)
 
     # Cria a linha do Sudeste.
-    plot1.line(df_deficientes_sudeste['ANO_CONCESSAO_BOLSA'], df_deficientes_sudeste['Quantidade'], line_width = 4, legend_label="Sudeste", line_color= 'black')
+    plot1.line(df_deficientes_sudeste['ANO_CONCESSAO_BOLSA'], df_deficientes_sudeste['Quantidade'], line_width = 6, legend_label="Sudeste", line_color= 'black')
 
     # Adiciona a legenda ao gráfico
     plot1.legend.location = "top_left"
@@ -168,7 +168,7 @@ def Guilherme_plot3(df):
         eixo_x.append(str(anos[i]) + '-' + str(anos[i+1]))
 
     # Cria o gráfico.
-    plot3 = figure(x_range=eixo_x, width =1000, height=400, tools="box_zoom, reset")
+    plot3 = figure(x_range=eixo_x, width =1000, height=400, tools="")
 
     plot3.xaxis.axis_label = "Intervalo de anos"
     plot3.yaxis.axis_label = "Número de bolsistas"
@@ -217,12 +217,32 @@ def Guilherme_plot3(df):
     plot3.grid.grid_line_color = 'gray'
     plot3.grid.grid_line_alpha = 0.2
 
+    # Cria uma ColumnDataSource para as velas
+    velas = ColumnDataSource(data=dict(
+        eixo_x=eixo_x,
+        bases_das_velas=bases_das_velas,
+        topos_das_velas=topos_das_velas,
+        cores = cores
+    ))
+
+    # Define a hover tool.
+    hover_tool = HoverTool(
+        tooltips=[
+            ("Intervalo de anos", "@eixo_x"),
+            ("Mínimo", "@bases_das_velas"),
+            ("Máximo", "@topos_das_velas"),
+        ],
+        mode="vline",
+    )
+    # Adiciona a hover tool ao plot
+    plot3.add_tools(hover_tool)
+
     # Gera as velas.
-    plot3.vbar(x=eixo_x, width=0.7, bottom=bases_das_velas, top=topos_das_velas, fill_color=cores, line_color='black')
+    plot3.vbar(x='eixo_x', width=0.7, bottom='bases_das_velas', top='topos_das_velas', fill_color='cores', line_color='black', source=velas)
 
     return plot3
 
 
-show(Guilherme_plot2(df))
+show(Guilherme_plot3(df))
 
 # print(df.columns)
