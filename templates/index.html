@@ -224,33 +224,28 @@
         {%- for root in doc.roots %}
         {% block root scoped %}
 
-        <div id="divisaoGustavo">
-          <div id="graficosGustavo">
-
-              {{ embed(roots.Linha_Gustavo) }}
-
-            <h2>Primeiro gráfico: Quantidade de bolsas anuais por sexo</h2>
-            <p>
-              O objetivo deste primeiro gráfico é de procurar disparidades de distribuição de bolsas por conta do gênero ao longo do tempo. Para isso foi utilizado um 
-              gráfico de linhas e o único critério de cores foi a fácil visualização das linhas, além da aplicação do tema geral do projeto.
-              Foram escolhidas apenas as ferramentas de zoom, movimento e reset pois é interessante poder vizualizar apenas uma parte do gráfico.
-            </p>
-
-              {{ embed(roots.Barra_Gustavo) }}
-
-            <h2>Segundo gráfico: Top 10 cursos mais oferecidos no ProUni</h2>
-            <p>
-              O Objetivo do segundo gráfico é mostrar como um curso em específico é muito mais frequênte que os outros, no caso administração.
-              Como o gráfico é de barras a movimentação e zoom não fazem sentido, então não se aplicaram ferramentas. 
-            </p>
-              {{ embed(roots.Mapa_Gustavo) }}
-
-            <h2>Terceito gráfico: Mapa com quantidade de bolsas por município</h2>
-            <p>
-              Tem uns com mais que 500. 
-            </p>
-          </div>
+      <div id="divisaoGustavo", style="visibility: hidden;"> 
+        <div id="graficosGustavo">
+            {{ embed(roots.Linha_Gustavo) }}
+          <h2>Primeiro gráfico: Quantidade de bolsas anuais por sexo</h2>
+          <p>
+            O objetivo deste primeiro gráfico é de procurar disparidades de distribuição de bolsas por conta do gênero ao longo do tempo. Para isso foi utilizado um 
+            gráfico de linhas e o único critério de cores foi a fácil visualização das linhas, além da aplicação do tema geral do projeto.
+            Foram escolhidas apenas as ferramentas de zoom, movimento e reset pois é interessante poder vizualizar apenas uma parte do gráfico.
+          </p>
+            {{ embed(roots.Barra_Gustavo) }}
+          <h2>Segundo gráfico: Top 10 cursos mais oferecidos no ProUni</h2>
+          <p>
+            O Objetivo do segundo gráfico é mostrar como um curso em específico é muito mais frequênte que os outros, no caso administração.
+            Como o gráfico é de barras a movimentação e zoom não fazem sentido, então não se aplicaram ferramentas. 
+          </p>
+            {{ embed(roots.Mapa_Gustavo) }}
+          <h2>Terceito gráfico: Mapa com quantidade de bolsas por município</h2>
+          <p>
+            Tem uns com mais que 500. 
+          </p>
         </div>
+      </div>
 
       <div id="divisaoGuilherme", style="display: none;">
         <div id="graficosGuilherme">
@@ -323,7 +318,8 @@
         // Funções para mostrar apenas os gráficos do botão correspondente
         function mostrarGustavo() {
             document.getElementById("conteudo").style.display = "none";
-            document.getElementById("divisaoGustavo").style.display = "block";
+            document.getElementById("divisaoGustavo").style.display = "block";    
+            document.getElementById("divisaoGustavo").style.visibility = "visible";    
             document.getElementById("divisaoGuilherme").style.display = "none";
             document.getElementById("divisaoJoao").style.display = "none";
             document.getElementById("divisaoVinicius").style.display = "none";
