@@ -14,11 +14,11 @@ caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'theme.
 
 curdoc().theme = Theme(filename=caminho_theme)
 
-output_file("Testes/teste_joao.html")  # Define o nome do arquivo de saída
+output_file("teste_joao.html")  # Define o nome do arquivo de saída
 
-#DATA = 'CSVs/prouni.csv'
+DATA = 'CSVs/prouni.csv'
 
-#df = criar_dataset(DATA)
+df = criar_dataset(DATA)
 
 '''
 Primeiro Gráfico: Divide por região a quantidade de bolsas por ano, mostrando a evolução de cada região
@@ -47,8 +47,9 @@ def Joao_plot1(df):
 
     plot_região.yaxis.formatter = NumeralTickFormatter(format='0,0') # Impede que os números apareçam em notação científica
 
-    return plot_região
+    show(plot_região)
 
+    return plot_região
 
 '''
 Gráfico 2: Quantidade de bolsas por região e por estado, mostrando a evolução de cada estado na quantidade de bolsas por ano.
@@ -128,8 +129,9 @@ def Joao_plot3(df):
 
     plot_modalidade.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
 
-    return plot_modalidade
+    show(plot_modalidade)
 
+    return plot_modalidade
 
 '''
 Gráfico 4: Histograma da quantidade de bolsas por faixa etária no ano de 2019, o mais recente no dataset.
@@ -157,4 +159,8 @@ def Joao_plot4(df):
     plot_idades.vbar(x='idade', top='NÚMERO DE PESSOAS', width=0.7, line_width=1.5, source=source)
     plot_idades.line(x='idade', y='NÚMERO DE PESSOAS', line_width=2, line_alpha=0.2, line_cap='round', source=source, line_color='black')
 
+    show(plot_idades)
+
     return plot_idades
+
+Joao_plot4(df)
