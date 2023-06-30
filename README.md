@@ -17,3 +17,6 @@ Arquivos e suas utilizações:
 - `theme.yaml`: Tema utilizado em alguns dos gráficos. Esse tema pode ser adicionado diretamente nos gráficos, o que permite padronização.
 - `graphs_joao.py`, `graphs_gustavo.py` e etc.: Criam os gráficos no Bokeh e estilizam-los. Os gráficos são colocados em funções para poderem ser chamados pela main.
 
+Link para o site: https://bokeh-visualization.netlify.app/
+
+O site foi hospedado na Netlify, um site gratuito para hospedagem de websites estáticos. Lá, é possível interagir com os gráficos e ver todos os textos criados para complemento da informação. 
