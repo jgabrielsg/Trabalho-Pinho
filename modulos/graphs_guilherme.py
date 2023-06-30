@@ -2,7 +2,7 @@ import pathlib
 import pandas as pd
 import numpy as np
 
-from bokeh.models import NumeralTickFormatter
+from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter, Span, Label
 from bokeh.io import output_file, save, show, curdoc
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
@@ -50,7 +50,7 @@ def Guilherme_plot1(df):
         eixo_x = df_regiao['ANO_CONCESSAO_BOLSA']
         eixo_y = df_regiao['Quantidade']
         
-        # Cria a linha com essas informações e a nomeia com o nome armazenado.
+         # Cria a linha com essas informações e a nomeia com o nome armazenado.
         plot1.line(eixo_x, eixo_y, legend_label=regiao)
 
     return plot1
@@ -108,6 +108,14 @@ def Guilherme_plot2(df):
             #Preenchendo as barras com uma cor para cada região.
             fill_color=factor_cmap("SIGLA_UF_BENEFICIARIO_BOLSA", palette=destaque_ES, factors=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"].unique()),source=df_deficientes_fisicos_sudeste)
     plot_proporcional.y_range.start = 0
+
+    media = df_deficientes_fisicos_sudeste['Proporcao'].mean()
+    linha_media = Span(dimension='width', line_color='gray', line_dash='dashed', line_width=2)
+    linha_media.location = media
+    plot_proporcional.add_layout(linha_media)
+
+    mean_label = Label(x=3, y=media, text=f"Média: {media:.2%}", text_font_size="10pt", text_color="gray")
+    plot_proporcional.add_layout(mean_label)
 
     #Gera um gridplot com os dois gráficos.
     plot2 = gridplot([[plot_desproporcional, None],[plot_proporcional, None]])          
@@ -180,5 +188,5 @@ def Guilherme_plot3(df):
 
     return plot3
 
-show(Guilherme_plot1(df))
+show(Guilherme_plot2(df))
 # print(df.columns)
