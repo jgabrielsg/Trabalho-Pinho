@@ -1,4 +1,5 @@
 import pandas as pd
+from bokeh.models import ColumnDataSource
 
 # Função que, quando dado o nome do arquivo csv, retorna ele como um dataset em Pandas:
 def criar_dataset(dataset):
@@ -27,3 +28,14 @@ def valores_unicos(dataset, coluna):
     for unico in dataset[coluna].unique():
         lista_de_valores_unicos.append(unico)
     print(lista_de_valores_unicos)
+
+#Transforma os dados em ColumnDataSource de acordo com a necessidade
+def transforma_ColumnDataSource(data, coluna = None, igualA = None):
+    if coluna != None and igualA != None:
+        data = ColumnDataSource(data[data[coluna] == igualA])
+    elif coluna != None:
+        data = ColumnDataSource(data[coluna])
+    else:
+        data = ColumnDataSource(data)
+
+    return data

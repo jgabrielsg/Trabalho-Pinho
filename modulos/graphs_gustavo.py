@@ -1,13 +1,10 @@
-# from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
-
-from bokeh.io import output_file, save, show
-from bokeh.models import ColumnDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
+from datacleaning import transforma_ColumnDataSource
+from bokeh.models import ColorBar, NumeralTickFormatter
 from bokeh.plotting import figure
 from bokeh.transform import linear_cmap
 
 import pyproj
 import pandas as pd
-import numpy as np
 
 # DATA = 'CSVs\prouni.csv'
 
@@ -35,8 +32,8 @@ def Gustavo_plot1(df):
     plot1.title.align = "center"
 
     #Cria os datasources com base no sexo, para poder plotar separadamente
-    dataSourceF = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "F"])
-    dataSourceM = ColumnDataSource(df1[df1["SEXO_BENEFICIARIO_BOLSA"] == "M"])
+    dataSourceF = transforma_ColumnDataSource(df1, coluna = "SEXO_BENEFICIARIO_BOLSA", igualA = "F")
+    dataSourceM = transforma_ColumnDataSource(df1, coluna = "SEXO_BENEFICIARIO_BOLSA", igualA = "M")
 
     plot1.line(x="ANO_CONCESSAO_BOLSA", y = "Quantidade", legend_label="Mulher", line_width=2, color = "red", source = dataSourceF)
     plot1.line(x="ANO_CONCESSAO_BOLSA", y = "Quantidade", legend_label="Homem", line_width=2, color = "blue", source = dataSourceM)
@@ -108,7 +105,7 @@ def Gustavo_plot3(df, municipios):
     color_mapper = linear_cmap(field_name = 'quantidade', palette = color_pallete, low = 1, high = 500)
 
     #Plota os dados no mapa
-    Bolsas = ColumnDataSource(data=df3)
+    Bolsas = transforma_ColumnDataSource(data=df3)
     mapa.circle(x="longitude_mercator", y="latitude_mercator", size=3, color=color_mapper, source=Bolsas)
 
     #Cria uma barra de cor como legenda ao lado
@@ -119,6 +116,12 @@ def Gustavo_plot3(df, municipios):
 
     #Configura a localização das ferramentas do gráfico
     mapa.toolbar.logo = None # Remove a logo no canto
+
+    mapa.title.text = "Totais de bolsas por cidade"
+    mapa.title.text_font = "Arial"
+    mapa.title.text_font_size = "13pt"
+    mapa.title.text_font_style = "bold"
+    mapa.title.align = "center"
 
     return mapa
 

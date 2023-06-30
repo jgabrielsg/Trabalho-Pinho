@@ -204,6 +204,10 @@
             de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
             Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
           </p>
+          <br>
+          <br>
+          <br>
+          <br>
         </article>
 
         <aside>
@@ -220,20 +224,32 @@
         {%- for root in doc.roots %}
         {% block root scoped %}
 
-        <div id="divisaoGustavo", style="display: none;">
+        <div id="divisaoGustavo">
           <div id="graficosGustavo">
+
               {{ embed(roots.Linha_Gustavo) }}
+
+            <h2>Primeiro gráfico: Quantidade de bolsas anuais por sexo</h2>
+            <p>
+              O objetivo deste primeiro gráfico é de procurar disparidades de distribuição de bolsas por conta do gênero ao longo do tempo. Para isso foi utilizado um 
+              gráfico de linhas e o único critério de cores foi a fácil visualização das linhas, além da aplicação do tema geral do projeto.
+              Foram escolhidas apenas as ferramentas de zoom, movimento e reset pois é interessante poder vizualizar apenas uma parte do gráfico.
+            </p>
+
               {{ embed(roots.Barra_Gustavo) }}
+
+            <h2>Segundo gráfico: Top 10 cursos mais oferecidos no ProUni</h2>
+            <p>
+              O Objetivo do segundo gráfico é mostrar como um curso em específico é muito mais frequênte que os outros, no caso administração.
+              Como o gráfico é de barras a movimentação e zoom não fazem sentido, então não se aplicaram ferramentas. 
+            </p>
               {{ embed(roots.Mapa_Gustavo) }}
+
+            <h2>Terceito gráfico: Mapa com quantidade de bolsas por município</h2>
+            <p>
+              Tem uns com mais que 500. 
+            </p>
           </div>
-          <aside>
-            <p>
-              Uma vila era legal
-            </p>
-            <p>
-              Duas vilas são ainda mais! Uau, estou encantado com a beleza das vilas. Três vilas são ainda mais! Uau, estou ainda mais feliz agora.
-            </p>
-          </aside>
         </div>
 
       <div id="divisaoGuilherme", style="display: none;">
@@ -241,12 +257,7 @@
             <!-- Colocar os gráficos criados aqui -->
         </div>
         <aside>
-          <p>
-            Cinco testes foram feitos para verificar a eficácia do método. Os testes foram feitos com 1, 2, 3, 4 e 5 vilas.
-          </p>
-          <p>
-            Porém, nenhuma delas funcionou. Estávamos desesperados, pois não sabíamos o que fazer. Então, decidimos fazer mais um teste.
-          </p>
+      
         </aside>
       </div>
 
@@ -257,19 +268,37 @@
             {{ embed(roots.Linhas_Joao) }}
         </div>
         <aside>
-          <p>
-            O teste final foi feito da pior maneira possível. Pensávamos estar fazer o teste certo, mas não estávamos. Foi um desastre.
-          </p>
-          <p>
-            Perdi. Eu perdi, nós perdemos e vocês perderam. Perdemos tudo. Perdemos a esperança, perdemos a fé, perdemos a vida.
-          </p>
+    
         </aside>
       </div>
 
       <div id="divisaoVinicius", style="display: none;">
         <div id="graficosVinicius">
+          <h2>Primeiro gráfico: quantidade de cada tipo de bolsa que foi fornecida através dos anos</h2>
+          <p>
+              O objetivo dessa primeira visualização foi analisar o investimento na educação superior brasileira, baseado na quantidade de bolsas do ProUni que foram disponibilizadas em cada ano. Para enriquecer o gráfico, separei pelos diferentes tipos de
+            bolsa que esse programa oferece. Como observado, as bolsas cresceram muito através dos anos, o que mostra que a formação superior está se tornando essencial para o ingresso no mercado de trabalho e o Estado está tentando acompanhar essa exigência.
+            Também serviu de curiosidade a existência da "Bolsa Complementar 25%", que existiu apenas em 2008 e, através de pesquisas, os 75% restantes da mensalidade serão bancados pelo Fies (Fundo de Financiamento ao Estudante do Ensino Superior). Ela foi
+            extinta pois o governo achou que seria mais eficaz investir em bolsas de 100% ao invés de criar novos tipos de bolsa. Deixei destacado no gráfico por meio de uma anotação como esse investimento realmente aconteceu.
+              Foi escolhido um gráfico de linhas pois é considerado um dos melhores para os gráficos em que ocorre a passagem de tempo, além de ser ótimo para visualizar a evolução da quantidade de bolsas. Tudo foi padronizado em "Arial" e com a cor preta
+            para que a visualização condiza com o público que se interessaria por ela, como acadêmicos, o que exige mais formalidade.
+          </p>
             {{ embed(roots.Linhas_Vinicius) }}
+          <h2>Segundo gráfico: raça dos bolsistas por estado brasileiro</h2>
+          <p>
+            Foram-se criados diversos gráficos entre os participantes, como gráficos de barras, gráficos de linhas, gráficos de
+            área, gráficos de histograma e gráficos de mapa. Os gráficos possuem certas funcionalidades, como a possibilidade
+            de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
+            Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
+          </p>
             {{ embed(roots.Racas_Vinicius) }}
+            <h2>Terceiro gráfico: sexo dos bolsistas dentre as 5 faculdades que mais deram bolsas</h2>
+          <p>
+            Foram-se criados diversos gráficos entre os participantes, como gráficos de barras, gráficos de linhas, gráficos de
+            área, gráficos de histograma e gráficos de mapa. Os gráficos possuem certas funcionalidades, como a possibilidade
+            de dar zoom, de mover o gráfico, de selecionar pontos e de mostrar informações ao passar o mouse sobre o gráfico.
+            Algumas das funcionalidades são padrões do Bokeh, como a possibilidade de dar zoom, outras foram implementadas.
+          </p>
             {{ embed(roots.Sexos_Vinicius) }}
         </div>
       </div>

@@ -1,5 +1,6 @@
-from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna
+from datacleaning import criar_dataset, contar_repeticoes_multiplas, coluna_vazia, limpar_coluna, transforma_ColumnDataSource
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Range1d
+from bokeh.models.annotations import BoxAnnotation
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.palettes import Accent3, Category20
@@ -21,10 +22,12 @@ def Vinicius_plot1(df):
 
     df_tipo_de_bolsa_por_ano = contar_repeticoes_multiplas(df, "TIPO_BOLSA", "ANO_CONCESSAO_BOLSA")
 
+    df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"] = df_tipo_de_bolsa_por_ano["ANO_CONCESSAO_BOLSA"].dt.year
+    
     plot1 = figure(tools = "box_zoom, pan, reset, save, wheel_zoom", width = 1400, name = "Linhas_Vinicius")
 
     # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
-    quantidade_de_bolsas_da_linha = HoverTool(tooltips = [("QUANTIDADE", "@QUANTIDADE")])
+    quantidade_de_bolsas_da_linha = HoverTool(tooltips = [("ANO", "@ANO_CONCESSAO_BOLSA"), ("QUANTIDADE", "@QUANTIDADE")])
     plot1.add_tools(quantidade_de_bolsas_da_linha)
 
     # Configurando a estética dos parâmetros
@@ -37,7 +40,7 @@ def Vinicius_plot1(df):
     for tipo_bolsa in df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique():
         # Criação de um dataset para cada tipo de bolsa
         tipo_bolsa_dados = df_tipo_de_bolsa_por_ano[df_tipo_de_bolsa_por_ano["TIPO_BOLSA"] == tipo_bolsa]
-        bolsas_tipo[tipo_bolsa] = ColumnDataSource(tipo_bolsa_dados)
+        bolsas_tipo[tipo_bolsa] = transforma_ColumnDataSource(tipo_bolsa_dados)
 
     # Plotando uma linha para cada tipo de bolsa
     for tipo_bolsa, cor in zip(df_tipo_de_bolsa_por_ano["TIPO_BOLSA"].unique(), Accent3):
@@ -84,6 +87,10 @@ def Vinicius_plot1(df):
     plot1.legend.label_text_font = "Arial"
     plot1.legend.label_text_font_size = "10pt"
 
+    # Adicionando uma anotação
+    box_annotation = BoxAnnotation(left = 2007.5, right = 2009.5, bottom=0, top=120000, fill_color = "Red", fill_alpha = 0.22)
+    plot1.add_layout(box_annotation)
+
     # Configurando a área de plotagem
     plot1.border_fill_color = "white"
     plot1.outline_line_color = "black"
@@ -108,7 +115,7 @@ def Vinicius_plot2(df):
                 tools = "box_zoom, pan, reset, save, wheel_zoom", name = "Racas_Vinicius")
 
     # Adicionando um tool em que ao passar o mouse em cima de uma barra, a quantidade de bolsas aparece
-    quantidade_de_bolsas_da_barra = HoverTool(tooltips = [("QUANTIDADE", "@QUANTIDADE")])
+    quantidade_de_bolsas_da_barra = HoverTool(tooltips = [("ESTADO", "@SIGLA_UF_BENEFICIARIO_BOLSA"), ("QUANTIDADE", "@QUANTIDADE")])
     plot2.add_tools(quantidade_de_bolsas_da_barra)
 
     # Configurando a estética dos parâmetros
@@ -123,7 +130,7 @@ def Vinicius_plot2(df):
     # Criando uma fonte com ColumnDataSource para cada umas das raças
     dicionario_fonte_raça = {}
     for raça in raças_valores_unicos:
-        source = ColumnDataSource(df_bolsa_por_estado[df_bolsa_por_estado["RACA_BENEFICIARIO_BOLSA"] == raça])
+        source = transforma_ColumnDataSource(df_bolsa_por_estado, "RACA_BENEFICIARIO_BOLSA", raça)
         dicionario_fonte_raça[raça] = source
 
     # Criando o gráfico
@@ -213,7 +220,7 @@ def Vinicius_plot3(df):
     # Criando uma fonte com ColumnDataSource para cada umas dos sexos
     dicionario_fonte_sexo = {}
     for sexo in sexos_valores_unicos:
-        source = ColumnDataSource(df_bolsa_por_faculdade[df_bolsa_por_faculdade["SEXO_BENEFICIARIO_BOLSA"] == sexo])
+        source = transforma_ColumnDataSource(df_bolsa_por_faculdade, "SEXO_BENEFICIARIO_BOLSA", sexo)
         dicionario_fonte_sexo[sexo] = source
 
     # Criando o gráfico

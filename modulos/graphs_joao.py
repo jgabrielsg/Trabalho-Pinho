@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, DatetimeTickFormatter, LabelSet, HoverTool
+from bokeh.models import NumeralTickFormatter, DatetimeTickFormatter, LabelSet, HoverTool
 from bokeh.io import output_file, save, show, curdoc
 from bokeh.plotting import figure
 from bokeh.layouts import gridplot
 from bokeh.themes import Theme
 
-from datacleaning import criar_dataset
+from datacleaning import criar_dataset, transforma_ColumnDataSource
 
 import os
 
@@ -105,11 +105,19 @@ def Joao_plot3(df):
 
     cores = ('#1957FF', '#0BD979')
 
-    source_ead_presencial = ColumnDataSource(data=dict(
+    source_ead_presencial = transforma_ColumnDataSource(data=dict(
         x = df_ead['ANO_CONCESSAO_BOLSA'].head(15),
         y1 = df_ead['QUANTIDADE POR ANO'].head(15),
         y2 = df_presencial['QUANTIDADE POR ANO'].head(15)
     ))
+
+    hover = HoverTool(tooltips=[
+    ("Ano", "@x"),
+    ("Quantidade EAD", "@y1"),
+    ("Quantidade Presencial", "@y2")
+    ])
+
+    plot_modalidade.add_tools(hover)
 
     plot_modalidade.varea_stack(x='x', stackers=['y1', 'y2'], color=cores, source=source_ead_presencial,
                                 legend_label=['EAD', 'PRESENCIAL'], alpha=0.5)
@@ -140,12 +148,16 @@ def Joao_plot4(df):
 
     df_idade = df[df['ANO_CONCESSAO_BOLSA'] == '2019']  # Filtrar os dados para o ano de 2019
 
-    df_idade = df_idade.groupby('idade').size().reset_index(name='NÚMERO DE PESSOAS')
+    df_idade = df_idade.groupby('idade').size().reset_index(name='PESSOAS')
 
     # Cria uma fonte de dados para o gráfico
-    source = ColumnDataSource(df_idade)
+    source = transforma_ColumnDataSource(df_idade)
 
     plot_idades = figure(x_range=(18, 80),width=1000, height=480, tools = "box_zoom, pan, reset, save, wheel_zoom", name = "Histograma_Joao")
+
+    hovertool_idades = HoverTool(tooltips = [("QUANTIDADE", "@PESSOAS")]) # Mostra a quantidade ao passar o mouse em cima da coluna
+    plot_idades.add_tools(hovertool_idades)
+
     plot_idades.title.text = "QUANTIDADE DE BOLSAS POR FAIXA ETÁRIA"
     plot_idades.title.align = 'center'
     plot_idades.xaxis.axis_label = "Idade"
@@ -154,7 +166,7 @@ def Joao_plot4(df):
     plot_idades.yaxis.formatter = NumeralTickFormatter(format='0,0')  # Impede que os números apareçam em notação científica
 
     # Usar a fonte de dados na criação das barras
-    plot_idades.vbar(x='idade', top='NÚMERO DE PESSOAS', width=0.7, line_width=1.5, source=source)
-    plot_idades.line(x='idade', y='NÚMERO DE PESSOAS', line_width=2, line_alpha=0.2, line_cap='round', source=source, line_color='black')
+    plot_idades.vbar(x='idade', top='PESSOAS', width=0.7, line_width=1.5, source=source)
+    plot_idades.line(x='idade', y='PESSOAS', line_width=2, line_alpha=0.2, line_cap='round', source=source, line_color='black')
 
     return plot_idades
