@@ -8,6 +8,8 @@ O trabalho foi feito usando a biblioteca Bokeh do Python. Com a biblioteca criam
 
 Este repositório está organizado para suportar a utilização do Bokeh Server, basta clonar o repositório e rodar o main.py. Na pasta CSVs temos os CSVs utilizados, na pasta modulos temos os arquivos em python que geram os gráficos, separados para cada um dos integrantes, na pasta templates temos o index.html, que possui a página do Bokeh Server criada, junto com a stylesheet e o script em JS.
 
+Foi utilizada o dataframe "Prouni.csv" para fazer todos os gráficos, e uma base complementar utilizada para fazer um mapa "municipios.csv" que contém a longitude e latitude dos municípios do Braisl.
+
 ---
 
 Arquivos e suas utilizações:
