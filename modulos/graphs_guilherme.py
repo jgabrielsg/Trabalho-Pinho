@@ -38,7 +38,7 @@ def Guilherme_plot1(df):
     df_deficientes_sudeste = df_deficientes_sudeste.groupby(["ANO_CONCESSAO_BOLSA"]).size().reset_index(name='Quantidade')
 
     # Estrutura básica do gráfico
-    plot1 = figure(width=1000, height=480, tools="box_zoom, pan, reset")
+    plot1 = figure(width=1000, height=480, tools="box_zoom, pan, reset", name = "linhas_guilherme")
     plot1.xaxis.axis_label = "Ano de Concessão da Bolsa"
     plot1.yaxis.axis_label = "Número de beneficiados"
     plot1.title.text = "Número de deficientes físicos com acesso a bolsa\nno Sudeste por ano"
@@ -101,7 +101,7 @@ def Guilherme_plot2(df):
 
 
     #Estrutura básica do gráfico desproporcional
-    plot_desproporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
+    plot_desproporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset", name = "plot_desproporcional")
     plot_desproporcional.xaxis.axis_label = "Estado"
     plot_desproporcional.yaxis.axis_label = "Número de benificiados"
     plot_desproporcional.title.text = "Número de deficientes físicos com acesso a bolsa\npor estado da região sudeste"
@@ -118,7 +118,7 @@ def Guilherme_plot2(df):
     plot_desproporcional.y_range.start = 0
 
     #Estrutura básica do gráfico proporcional
-    plot_proporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset")
+    plot_proporcional = figure(x_range=df_deficientes_fisicos_sudeste["SIGLA_UF_BENEFICIARIO_BOLSA"], width=600, height=300, tools="box_zoom, pan, reset", name = "plot_proporcional")
     plot_proporcional.xaxis.axis_label = "Estado"
     plot_proporcional.yaxis.axis_label = "Porcentagem dentre os bolsistas"
     plot_proporcional.title.text = "Percentual de estudantes com deficiência física\nem relação ao total de bolsistas"
@@ -149,7 +149,7 @@ def Guilherme_plot2(df):
     #Gera um gridplot com os dois gráficos.
     plot2 = gridplot([[plot_desproporcional, None],[plot_proporcional, None]])          
 
-    return plot2
+    return plot_proporcional, plot_desproporcional
 
 #------Terceiro Gráfico: fazer um gráfico da quantidade de registros por ano no estilo gráfico de velas
 
@@ -168,7 +168,7 @@ def Guilherme_plot3(df):
         eixo_x.append(str(anos[i]) + '-' + str(anos[i+1]))
 
     # Cria o gráfico.
-    plot3 = figure(x_range=eixo_x, width =1000, height=400, tools="")
+    plot3 = figure(x_range=eixo_x, width =1000, height=400, tools="", name = "velas_guilherme")
 
     plot3.xaxis.axis_label = "Intervalo de anos"
     plot3.yaxis.axis_label = "Número de bolsistas"
@@ -242,6 +242,6 @@ def Guilherme_plot3(df):
 
     return plot3
 
-# show(Guilherme_plot3(df))
+show(Guilherme_plot1(df))
 
 # print(df.columns)

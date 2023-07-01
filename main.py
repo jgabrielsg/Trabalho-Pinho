@@ -3,6 +3,7 @@ from bokeh.plotting import curdoc
 from modulos import graphs_gustavo
 from modulos import graphs_joao
 from modulos import graphs_vinicius
+from modulos import graphs_guilherme
 
 from os.path import dirname, join #necessário pro bokeh achar os arquivos
 import pandas as pd
@@ -32,6 +33,10 @@ Vinicius_plot1 = graphs_vinicius.Vinicius_plot1(df)
 Vinicius_plot2 = graphs_vinicius.Vinicius_plot2(df)
 Vinicius_plot3 = graphs_vinicius.Vinicius_plot3(df)
 
+Guilherme_plot1 = graphs_guilherme.Guilherme_plot1(df)
+Guilherme_plot2, Guilherme_plot3 = graphs_guilherme.Guilherme_plot2(df)
+Guilherme_plot4 = graphs_guilherme.Guilherme_plot3(df)
+
 
 #permite que o index.html leia os gráficos
 curdoc().add_root(Gustavo_plot1)
@@ -46,3 +51,8 @@ curdoc().add_root(Joao_plot4)
 curdoc().add_root(Vinicius_plot1)
 curdoc().add_root(Vinicius_plot2)
 curdoc().add_root(Vinicius_plot3)
+
+curdoc().add_root(Guilherme_plot1)
+curdoc().add_root(Guilherme_plot2)
+curdoc().add_root(Guilherme_plot3)
+curdoc().add_root(Guilherme_plot4)
