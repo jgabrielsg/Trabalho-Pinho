@@ -6,7 +6,7 @@
 
 O trabalho foi feito usando a biblioteca Bokeh do Python. Com a biblioteca criamos gráficos interativos e os colocamos em um site hospedado no Netfily. Cada um dos integrantes fez, no mínimo, 3 gráficos, com até 3 modelos diferentes, como gráficos de linha, histogramas, mapas, gráficos de área, etc.
 
-Aqui estão os arquivos e pastas utilizados para hospedarmos o nosso Bokeh Server. Na pasta CSVs temos os CSVs utilizados, na pasta modulos temos os arquivos em python que geram os gráficos, separados para cada um dos integrantes, na pasta templates temos o index.html, que possui a página do Bokeh Server criada, junto com a stylesheet e o script em JS.
+Este repositório está organizado para suportar a utilização do Bokeh Server, basta clonar o repositório e rodar o main.py. Na pasta CSVs temos os CSVs utilizados, na pasta modulos temos os arquivos em python que geram os gráficos, separados para cada um dos integrantes, na pasta templates temos o index.html, que possui a página do Bokeh Server criada, junto com a stylesheet e o script em JS.
 
 ---
 

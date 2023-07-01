@@ -136,6 +136,11 @@ def Gustavo_plot3(df, municipios):
     mapa.title.text_font_style = "bold"
     mapa.title.align = "center"
 
+    #Adiciona hovertool nas barras
+    hover = HoverTool()
+    hover.tooltips = [("Cidade", "@MUNICIPIO_BENEFICIARIO_BOLSA"), ("Quantidade", "@quantidade")]
+    mapa.add_tools(hover)
+
     return mapa
 
 def cria_mapa():
