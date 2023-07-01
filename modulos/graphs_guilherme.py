@@ -242,7 +242,6 @@ def Guilherme_plot3(df):
 
     return plot3
 
-
-show(Guilherme_plot3(df))
+# show(Guilherme_plot3(df))
 
 # print(df.columns)

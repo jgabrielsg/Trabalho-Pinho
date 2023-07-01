@@ -229,20 +229,19 @@
 
       <div id="divisaoGustavo", style="visibility: hidden;"> 
         <div id="graficosGustavo">
-            {{ embed(roots.Linha_Gustavo) }}
           <h6>Primeiro gráfico: Quantidade de bolsas anuais por sexo</h6>
           <p> 
             O objetivo deste gráfico é de procurar disparidades de distribuição de bolsas por conta do gênero ao longo do tempo. Para isso foi utilizado um 
             gráfico de linhas e o único critério de cores foi a fácil visualização das linhas, além da aplicação do tema geral do projeto.
             Foram escolhidas apenas as ferramentas de zoom, movimento e reset pois é interessante poder vizualizar apenas uma parte do gráfico.
           </p>
-            {{ embed(roots.Barra_Gustavo) }}
+            {{ embed(roots.Linha_Gustavo) }}
           <h2>Segundo gráfico: op 10 cursos mais oferecidos no ProUni</h6>
           <p> 
             O Objetivo do segundo gráfico é mostrar como um curso em específico é muito mais frequênte que os outros, no caso administração.
             Para esse gráfico a melhor ferramenta é o hovertool, para se poder verificar o quanto cada barra representa passando o mouse por cima dela. 
           </p>
-            {{ embed(roots.Mapa_Gustavo) }}
+            {{ embed(roots.Barra_Gustavo) }}
           <h2>Terceito gráfico: Mapa com quantidade de bolsas por município</h2>
           <p>
             O Objetivo deste gráfico é demonstrar visualmente e geograficamente a distribuição das bolsas do ProUni pelo
@@ -251,6 +250,7 @@
             500 para esse gráfico para que o gradiente de cores ficasse viável.
             Caso o gráfico esteja vazio, basta clicar no botão "reset".
           </p>
+            {{ embed(roots.Mapa_Gustavo) }}
         </div>
       </div>
 
