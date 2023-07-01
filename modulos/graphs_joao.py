@@ -14,11 +14,6 @@ caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'theme.
 
 curdoc().theme = Theme(filename=caminho_theme)
 
-output_file("Testes/teste_joao.html")  # Define o nome do arquivo de saída
-
-#DATA = 'CSVs/prouni.csv'
-
-#df = criar_dataset(DATA)
 
 '''
 Primeiro Gráfico: Divide por região a quantidade de bolsas por ano, mostrando a evolução de cada região
@@ -26,7 +21,7 @@ na quantidade de bolsas por ano. Foi feito um gráfico de linhas para cada regi�
 '''
 
 def Joao_plot1(df):
-    df_regiões = df.groupby(['ANO_CONCESSAO_BOLSA', 'REGIAO_BENEFICIARIO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
+    df_regiões = df.groupby(['ANO_CONCESSAO_BOLSA', 'REGIAO_BENEFICIARIO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO') # Agrupar os dados por região e calcular a quantidade de beneficiados
 
     df_regiões['ANO_CONCESSAO_BOLSA'] = df_regiões['ANO_CONCESSAO_BOLSA'].astype(int)  # Converter a coluna de ano para inteiros
 
@@ -35,11 +30,13 @@ def Joao_plot1(df):
     regiões = df_regiões['REGIAO_BENEFICIARIO_BOLSA'].unique()  # Obter a lista de regiões únicas
     cores = ('#1957FF', '#0BD979', '#D4CB00', '#EB8100', '#E00913')
 
+    # Cria um gráfico de linhas para cada região
     for i, região in enumerate(regiões):
         dados_regionais = df_regiões[df_regiões['REGIAO_BENEFICIARIO_BOLSA'] == região]
         plot_região.line(dados_regionais['ANO_CONCESSAO_BOLSA'], dados_regionais['QUANTIDADE POR ANO'], 
                         line_width=5, line_color=cores[i], legend_label=região)
 
+    # Configura a localização das ferramentas do gráfico
     plot_região.title.text = "QUANTIDADE DE BOLSAS POR REGIÃO"
     plot_região.title.align = 'center'
     plot_região.xaxis.axis_label = "Ano"
@@ -67,17 +64,19 @@ def Joao_plot2(df):
 
     plots = []  # Lista para armazenar os gráficos individuais
 
+    # Cria um gráfico de linhas para cada região
     for regiao in regioes_unicas:
         dados_regiao = df_regiao_estado[df_regiao_estado['REGIAO_BENEFICIARIO_BOLSA'] == regiao]
         plot_estados = figure(x_axis_type="datetime", width=1200, height=400, 
                             x_range=(df_regiao_estado['ANO_CONCESSAO_BOLSA'].min(), df_regiao_estado['ANO_CONCESSAO_BOLSA'].max()), name = "Região {}".format(regiao))
 
+        # Cria um gráfico de linhas para cada estado
         for i, estado in enumerate(dados_regiao['SIGLA_UF_BENEFICIARIO_BOLSA'].unique()):
             dados_estado = dados_regiao[dados_regiao['SIGLA_UF_BENEFICIARIO_BOLSA'] == estado]
             plot_estados.line(dados_estado['ANO_CONCESSAO_BOLSA'], dados_estado['QUANTIDADE DE BENEFICIADOS'],
                                     line_width=5, line_color=cores[i], legend_label=estado)
             
-
+        # Configuração do gráfico
         plot_estados.title.text = "QUANTIDADE DE BOLSAS POR ESTADO - REGIÃO {}".format(regiao)
         plot_estados.title.align = 'center'
         plot_estados.xaxis.axis_label = "Ano"
@@ -97,20 +96,22 @@ Gráfico 3: Quantidade de bolsas por modalidade de ensino por ano, separando ent
 '''
 
 def Joao_plot3(df):
-    df_ead_presencial = df.groupby(['MODALIDADE_ENSINO_BOLSA', 'ANO_CONCESSAO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO')
-    df_ead = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'EAD']
-    df_presencial = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'PRESENCIAL']
+    df_ead_presencial = df.groupby(['MODALIDADE_ENSINO_BOLSA', 'ANO_CONCESSAO_BOLSA']).size().reset_index(name='QUANTIDADE POR ANO') # Agrupar os dados por modalidade de ensino e calcular a quantidade de beneficiados
+    df_ead = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'EAD'] # Filtrar os dados para a modalidade EAD
+    df_presencial = df_ead_presencial[df_ead_presencial['MODALIDADE_ENSINO_BOLSA'] == 'PRESENCIAL'] # Filtrar os dados para a modalidade PRESENCIAL
 
     plot_modalidade = figure(width=1000, height=480, x_range=(2005, 2019), name = "Area_Joao")
 
-    cores = ('#1957FF', '#0BD979')
+    cores = ('#1957FF', '#0BD979') # Definir as cores para cada modalidade
 
+    # Cria um ColumnDataSource para o gráfico
     source_ead_presencial = transforma_ColumnDataSource(data=dict(
         x = df_ead['ANO_CONCESSAO_BOLSA'].head(15),
         y1 = df_ead['QUANTIDADE POR ANO'].head(15),
         y2 = df_presencial['QUANTIDADE POR ANO'].head(15)
     ))
 
+    # Adiciona a ferramenta de hover
     hover = HoverTool(tooltips=[
     ("Ano", "@x"),
     ("Quantidade EAD", "@y1"),
@@ -129,6 +130,7 @@ def Joao_plot3(df):
     # Adicione os rótulos ao gráfico
     plot_modalidade.add_layout(labels)
 
+    # Configuração do Gráfico
     plot_modalidade.title.text = 'QUANTIDADE DE BOLSAS POR MODALIDADE DE ENSINO'
     plot_modalidade.title.align = 'center'
     plot_modalidade.xaxis.axis_label = 'Ano'
@@ -148,7 +150,7 @@ def Joao_plot4(df):
 
     df_idade = df[df['ANO_CONCESSAO_BOLSA'] == '2019']  # Filtrar os dados para o ano de 2019
 
-    df_idade = df_idade.groupby('idade').size().reset_index(name='PESSOAS')
+    df_idade = df_idade.groupby('idade').size().reset_index(name='PESSOAS') # Agrupar os dados por idade e calcular a quantidade de beneficiados
 
     # Cria uma fonte de dados para o gráfico
     source = transforma_ColumnDataSource(df_idade)
@@ -158,6 +160,7 @@ def Joao_plot4(df):
     hovertool_idades = HoverTool(tooltips = [("QUANTIDADE", "@PESSOAS")]) # Mostra a quantidade ao passar o mouse em cima da coluna
     plot_idades.add_tools(hovertool_idades)
 
+    # Configuração do Gráfico
     plot_idades.title.text = "QUANTIDADE DE BOLSAS POR FAIXA ETÁRIA"
     plot_idades.title.align = 'center'
     plot_idades.xaxis.axis_label = "Idade"
