@@ -256,9 +256,27 @@
 
       <div id="divisaoGuilherme", style="display: none;">
         <div id="graficosGuilherme">
+          <h6>PRIMEIRO GRÁFICO: NÚMERO DE BOLSISTAS DEFICIENTES FÍSICOS NO SUDESTE</h2>
+          <p>
+            Quando primeiro observei a base de dados achei que seria uma proposta interessante analizar a quantidade de bolsistas deficientes físicos. Assim, com o intuito de analizar se o mundo moderno está trazendo realmente avanços para a igualdade de todos, precisamos checar se número de bolsas está aumentando ou diminuindo com o tempo, para isso, a melhor opção era o gráfico de linhas. Após uma interação inicial com a base e a ideia, a escolha da região sudeste foi para complementar a segunda visualização, e, com o intuito de permitir a análise do todo e das partes, adicionei também não só a linha dos estados que pertencem a região mas também da região como um todo, assim permitindo uma maior profundidade da analise.
+          </p>
+          <p>
+            Através do gráfico, um ponto interessante a se notar é a similiaridade do todo, a região, com o estado de São Paulo, afinal, o estado concentra grande partes das bolsas do ProUni, por sua imensa população e numerosas instituições de ensino.
+          </p>
           {{ embed(roots.linhas_guilherme) }}
+          <h6>SEGUNDO GRÁFICO: DUALIDADE NÚMERO/PROPORÇÃO</h2>
+          <p>
+            Ainda no sudeste, busquei trazer uma análise mais profunda sobre a relação quantidade e acessibilidade, observando o primeiro gráfico do grid a seguir uma pessoa poderia pensar que o estado de São Paulo da mais oportunidade aos deficientes físicos na educação, porém, não podemos nos deixar esquecer que exitem outros fatores que devem ser levados em consideração, como população, por exemplo, ou nesse caso: o número total de bolsistas.
+          </p>
+          <p>
+            Assim, para permitir uma real análise, surge o segundo gráfico desse grid, ele traz a proporção do número de bolsistas com alguma incapacidade física para o total de bolsistas do estado, e, como se pode observar pela pouca variação dentre as barras e a média, todos os estados são praticamente similares nessa questão. Poderia se concluir então, que, Espírito Santo é o estado com maior acessibilidade do sudeste, isto é, numa análise rasa, utilizando somente os dados do csv.
+          </p>
           {{ embed(roots.plot_desproporcional) }}
           {{ embed(roots.plot_proporcional) }}
+          <h6>TERCEIRO GRÀFICO: CandleStick chart</h2>
+          <p>
+            Com o terceiro gráfico eu foquei na visualização, e, para implementar um gráfico de velas utilizando o csv eu tive que usar a variação do número de bolsistas nos intervalos de dois em dois anos, assim, eu teria uma variação, uma queda(vela vermelha) ou um aumento(vela verde). O modo como essa visualização funciona é: a base e o topo da vela representam a quantidade de bolsistas nos anos do intervalo, se ela é verde significa que a variação foi da base para o topo, se ela é vermelha o contrário.
+          </p>
           {{ embed(roots.velas_guilherme) }}
         </div>
         <aside>
