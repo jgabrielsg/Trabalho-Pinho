@@ -17,11 +17,11 @@ caminho_theme = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tema_g
 
 curdoc().theme = Theme(filename=caminho_theme)
 
-output_file("Testes/teste_guilherme.html")
+# output_file("Testes/teste_guilherme.html")
 
-DATA = 'CSVs/prouni.csv'
+# DATA = 'CSVs/prouni.csv'
 
-df = criar_dataset(DATA)
+# df = criar_dataset(DATA)
 
 #------Primeiro Gráfico: Relação entre região e acesso de Deficientes físicos a bolsas
 
@@ -241,7 +241,3 @@ def Guilherme_plot3(df):
     plot3.vbar(x='eixo_x', width=0.7, bottom='bases_das_velas', top='topos_das_velas', fill_color='cores', line_color='black', source=velas)
 
     return plot3
-
-show(Guilherme_plot1(df))
-
-# print(df.columns)
